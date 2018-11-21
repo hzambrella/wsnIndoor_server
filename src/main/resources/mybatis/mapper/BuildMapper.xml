@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hz.wsnIndoorBack.mapper.BuildMapper" >
+    
+    <sql id="Base_Column_List" >
+        bid, name, position[0] as x, position[1] as y, descrip,address,height
+    </sql>
+ 
+    <select id="getBuildings" resultType="Building"  >
+       SELECT 
+       <include refid="Base_Column_List" />
+	   FROM building
+    </select>
+</mapper>

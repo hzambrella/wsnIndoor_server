@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hz.wsnIndoorBack.mapper.MapMapper">
+
+	<sql id="mapSql">
+		t1.map_id as mapId,
+		t1.title, t1.status,t1.descrip,
+		to_char(t1.create_time,'YYYY年MM月DD日
+		HH:MI')as createTime,
+		to_char(t1.update_time,'YYYY年MM月DD日 HH:MI')as
+		updateTime,
+		t3.name as
+		buildName,t2.floor as floor,t3.height,t2.bid as bid
+	</sql>
+	
+	<select id="getMaps" resultType="wsnMap">
+		SELECT
+		<include refid="mapSql"></include>
+		FROM
+		public.map as t1
+		LEFT JOIN
+		building_map as t2 on t1.map_id=t2.map_id
+		LEFT JOIN building as t3 on
+		t3.bid=t2.bid;
+	</select>
+	
+	<select id="getMapById" resultType="wsnMap">
+		SELECT
+		<include refid="mapSql"></include>
+		FROM
+		public.map as t1
+		LEFT JOIN
+		building_map as t2 on t1.map_id=t2.map_id
+		LEFT JOIN building as t3 on
+		t3.bid=t2.bid WHERE t1.map_id=#{mapId}
+	</select>
+
+	<select id="getBaseMapInfo" resultType="baseMap">
+		SELECT map_id as mapId,
+		code, host, server_type as serverType, workspace, request_type as
+		requestType, layers,
+		x_min, x_max,
+		y_min, y_max, zoom_default, zoom_max,
+		zoom_min
+		FROM public.map_basemap
+		WHERE map_id=#{mapId};
+	</select>
+</mapper>

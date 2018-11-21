@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title>第一个HTML页面</title>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+	<h1>Hello Spring Boot!!!</h1>
+	<p th:text="${hello}"></p>
+	<p id="app">{{message}}</p>
+
+</body>
+<script>
+	var vue=new Vue({
+		el:"#app",
+		data:{
+			message:"this is vue temp",
+		}
+	})
+</script>
+
+
+</html>
