@@ -12,5 +12,7 @@
 		<typeAlias alias="Building" type="com.hz.wsnIndoorBack.model.Building" />
 		<typeAlias alias="wsnMap" type="com.hz.wsnIndoorBack.model.Map" />
 		<typeAlias alias="baseMap" type="com.hz.wsnIndoorBack.model.BaseMapInfo" />
+		<typeAlias alias="Coordinator" type="com.hz.wsnIndoorBack.model.Coordinator" />
+		<typeAlias alias="Sink" type="com.hz.wsnIndoorBack.model.Sink" />
 	</typeAliases>
 </configuration>

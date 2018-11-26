@@ -1,7 +1,6 @@
 package com.hz.wsnIndoorBack.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @SuppressWarnings("serial")
 public class Map implements Serializable{
