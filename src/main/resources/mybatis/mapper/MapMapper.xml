@@ -12,7 +12,7 @@
 		t3.name as
 		buildName,t2.floor as floor,t3.height,t2.bid as bid
 	</sql>
-	
+
 	<select id="getMaps" resultType="wsnMap">
 		SELECT
 		<include refid="mapSql"></include>
@@ -23,7 +23,7 @@
 		LEFT JOIN building as t3 on
 		t3.bid=t2.bid;
 	</select>
-	
+
 	<select id="getMapById" resultType="wsnMap">
 		SELECT
 		<include refid="mapSql"></include>
@@ -42,7 +42,15 @@
 		x_min, x_max,
 		y_min, y_max, zoom_default, zoom_max,
 		zoom_min
-		FROM public.map_basemap
+		FROM map_basemap
 		WHERE map_id=#{mapId};
+	</select>
+
+	<select id="getBuildMapRel" resultType="buildMapRel">
+		SELECT bid,map_id as
+		mapId,floor
+		FROM public.building_map
+		WHERE bid=${bid}
+		order by bid,floor desc
 	</select>
 </mapper>

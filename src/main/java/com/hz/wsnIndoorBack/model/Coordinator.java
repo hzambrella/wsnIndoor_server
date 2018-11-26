@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class Coordinator implements Serializable {
-	private Integer sinkId;
+	private Integer coorId;
 	private Integer status;
 	private String sn;
 	private Integer bid;
+	private Integer nid;
+	private Integer floor;
 	public Integer getBid() {
 		return bid;
 	}
@@ -20,13 +22,12 @@ public class Coordinator implements Serializable {
 	public void setNid(Integer nid) {
 		this.nid = nid;
 	}
-	private Integer nid;
-	
-	public Integer getSinkId() {
-		return sinkId;
+
+	public Integer getCoorId() {
+		return coorId;
 	}
-	public void setSinkId(Integer sinkId) {
-		this.sinkId = sinkId;
+	public void setCoorId(Integer coorId) {
+		this.coorId = coorId;
 	}
 	public Integer getStatus() {
 		return status;
@@ -40,5 +41,12 @@ public class Coordinator implements Serializable {
 	public void setSn(String sn) {
 		this.sn = sn;
 	}
+	public Integer getFloor() {
+		return floor;
+	}
+	public void setFloor(Integer floor) {
+		this.floor = floor;
+	}
+	
 }
 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hz.wsnIndoorBack.mapper.NetMapper">
+
+	<sql id="sinkSql">
+		sink_id as sinkId, status, sn, bid
+	</sql>
+
+	<select id="getSinksByBid" resultType="sink">
+		SELECT
+		<include refid="sinkSql"></include>
+		FROM
+		sink
+		WHERE
+		bid=${bid}
+	</select>
+
+	<sql id="coordinatorSql">
+		t1.coor_id as coorId, t1.sn as sn, t1.status as status,
+		t2.floor as floor,t2.bid as bid ,t2.nid as nid
+	</sql>
+
+	<select id="getCoordinatorsByBid" resultType="coor">
+		SELECT
+		<include refid="coordinatorSql"></include>
+		FROM coordinator as t1
+		LEFT JOIN
+		build_network as t2
+		ON
+		t1.coor_id=t2.coor_id
+		WHERE
+		t2.bid=${bid}
+	</select>
+
+	<sql id="anchorSql">
+		t1.anchor_id as anchorId,
+		t2.nid as nid,
+		t2.bid as bid,
+		t2.floor as floor,
+		t1.anchor_type as anchorType,
+		t1.status as status,
+		t1.position[0] as x,
+		t1.position[1] as y,
+		t1.sn as sn
+	</sql>
+
+	<select id="getAnchors" resultType="anchor">
+		SELECT
+		<include refid="anchorSql"></include>
+		FROM anchor as t1
+		LEFT JOIN
+		build_network as t2
+		ON
+		t1.nid=t2.nid
+		WHERE
+		t2.bid=${bid} and t2.floor=${floor}
+		<if test="anchorType!=null">
+			and t1.anchor_type=${anchorType}
+		</if>
+	</select>
+
+	<sql id="networkSql">
+		nid, bid, coor_id as coorId, floor, com_status as
+		comStatus, anchor_status as anchorStatus
+	</sql>
+
+	<select id="getNetwork" resultType="network">
+		SELECT
+		<include refid="networkSql"></include>
+		FROM build_network
+		WHERE
+		bid=${bid} and floor=${floor}
+	</select>
+
+</mapper>
