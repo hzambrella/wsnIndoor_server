@@ -91,11 +91,25 @@ public class BackDataController {
 		return result;
 	}
 
+	// 网络状况，包括通讯状态，锚节点布设状态
 	@GetMapping("/network")
 	public Result<Network> network(@RequestParam(value = "bid") Integer bid,
 			@RequestParam(value = "floor") Integer floor) {
 		Network network = netMapper.getNetwork(bid, floor);
 		Result<Network> result = new Result<>(network);
+		return result;
+	}
+
+	@GetMapping("/networks")
+	public Result<PageInfo<Network>> networks(@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "bid") Integer bid) {
+		if (page == null || page == 0) {
+			page = 1;
+		}
+		PageHelper.startPage(page, Network.Limit);
+		List<Network> networks = netMapper.getNetworks(bid);
+		PageInfo<Network> pageInfo = new PageInfo<>(networks);
+		Result<PageInfo<Network>> result = new Result<>(pageInfo);
 		return result;
 	}
 

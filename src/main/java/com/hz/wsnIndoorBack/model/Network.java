@@ -5,12 +5,15 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class Network implements Serializable{
+	public static Integer Limit=10;
 	private Integer nid;
 	private Integer bid;
 	private Integer floor;
+	private Integer coorId;
 	private Integer comStatus;
 	private Integer anchorStatus;
-	private Integer coorId;
+	private Integer anchorTaskStatus;
+	private Coordinator coordinator;
 	
 	public Integer getNid() {
 		return nid;
@@ -30,6 +33,13 @@ public class Network implements Serializable{
 	public void setFloor(Integer floor) {
 		this.floor = floor;
 	}
+	
+	public Integer getCoorId() {
+		return coorId;
+	}
+	public void setCoorId(Integer coorId) {
+		this.coorId = coorId;
+	}
 	public Integer getComStatus() {
 		return comStatus;
 	}
@@ -42,12 +52,17 @@ public class Network implements Serializable{
 	public void setAnchorStatus(Integer anchorStatus) {
 		this.anchorStatus = anchorStatus;
 	}
-	public Integer getCoorId() {
-		return coorId;
+	public Coordinator getCoordinator() {
+		return coordinator;
 	}
-	public void setCoorId(Integer coorId) {
-		this.coorId = coorId;
+	public void setCoordinator(Coordinator coordinator) {
+		this.coordinator = coordinator;
 	}
-	
+	public Integer getAnchorTaskStatus() {
+		return anchorTaskStatus;
+	}
+	public void setAnchorTaskStatus(Integer anchorTaskStatus) {
+		this.anchorTaskStatus = anchorTaskStatus;
+	}
 	
 }

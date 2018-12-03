@@ -20,7 +20,7 @@
 		t2.floor as floor,t2.bid as bid ,t2.nid as nid
 	</sql>
 
-	<select id="getCoordinatorsByBid" resultType="coor">
+	<select id="getCoordinatorsByBid" resultType="coordinator">
 		SELECT
 		<include refid="coordinatorSql"></include>
 		FROM coordinator as t1
@@ -60,8 +60,8 @@
 	</select>
 
 	<sql id="networkSql">
-		nid, bid, coor_id as coorId, floor, com_status as
-		comStatus, anchor_status as anchorStatus
+		nid, bid, coor_id as coorId,floor,com_status as comStatus,
+		anchor_status as anchorStatus,anchor_task_status as anchorTaskStatus
 	</sql>
 
 	<select id="getNetwork" resultType="network">
@@ -72,4 +72,37 @@
 		bid=${bid} and floor=${floor}
 	</select>
 
+	<sql id="networksSql">
+		t1.nid, t1.bid, t1.coor_id, t1.floor,
+		t1.com_status,t1.anchor_status,t1.anchor_task_status,
+		t2.coor_id,t2.sn,t2.pan_id,t2.status,
+		t1.nid, t1.bid, t1.floor
+	</sql>
+
+	<resultMap id="networkResult" type="network">
+		<id property="nid" column="nid" />
+		<result property="bid" column="bid" />
+		<result property="coorId" column="coor_id" />
+		<result property="floor" column="floor" />
+		<result property="comStatus" column="com_status" />
+		<result property="anchorStatus" column="anchor_status" />
+		<result property="anchorTaskStatus" column="anchor_task_status" />
+		<association property="coordinator" javaType="coordinator">
+			<id property="coorId" column="coor_id" />
+			<result property="sn" column="sn" />
+			<result property="panId" column="pan_id" />
+			<result property="status" column="status" />
+			<result property="nid" column="nid" />
+			<result property="bid" column="bid" />
+			<result property="floor" column="floor" />
+		</association>
+	</resultMap>
+
+	<select id="getNetworks" resultMap="networkResult">
+		SELECT
+		<include refid="networksSql"></include>
+		FROM build_network as t1 LEFT
+		JOIN coordinator as t2 ON
+		t1.coor_id=t2.coor_id WHERE bid=${bid}
+	</select>
 </mapper>

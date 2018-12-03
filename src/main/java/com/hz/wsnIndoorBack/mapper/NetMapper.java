@@ -15,4 +15,5 @@ public interface NetMapper {
 	public List<Anchor>getAnchors(@Param("bid")Integer bid,
 			@Param("floor")Integer floor, @Param("anchorType")Integer anchorType);
 	public Network getNetwork(@Param("bid")Integer bid,@Param("floor")Integer floor);
+	public List<Network> getNetworks(@Param("bid")Integer bid);
 }

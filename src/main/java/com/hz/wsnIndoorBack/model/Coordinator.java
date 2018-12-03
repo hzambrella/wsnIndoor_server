@@ -10,6 +10,7 @@ public class Coordinator implements Serializable {
 	private Integer bid;
 	private Integer nid;
 	private Integer floor;
+	private String panId;
 	public Integer getBid() {
 		return bid;
 	}
@@ -47,6 +48,11 @@ public class Coordinator implements Serializable {
 	public void setFloor(Integer floor) {
 		this.floor = floor;
 	}
-	
+	public String getPanId() {
+		return panId;
+	}
+	public void setPanId(String panId) {
+		this.panId = panId;
+	}
 }
 

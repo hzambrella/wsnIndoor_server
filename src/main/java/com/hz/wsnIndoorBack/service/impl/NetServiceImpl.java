@@ -26,7 +26,6 @@ public class NetServiceImpl implements INetService{
 		netComDev.setSinks(sinks);
 		Result<NetComDev>result=new Result<>(netComDev);
 		return result;
-		
 	}
 
 }
