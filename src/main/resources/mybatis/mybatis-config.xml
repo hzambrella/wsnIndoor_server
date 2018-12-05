@@ -17,5 +17,7 @@
 		<typeAlias alias="anchor" type="com.hz.wsnIndoorBack.model.Anchor" />
 		<typeAlias alias="network" type="com.hz.wsnIndoorBack.model.Network" />
 		<typeAlias alias="buildMapRel" type="com.hz.wsnIndoorBack.model.BuildMapRel" />
+		<typeAlias alias="sensor" type="com.hz.wsnIndoorBack.model.Sensor" />
+		<typeAlias alias="sensorData" type="com.hz.wsnIndoorBack.model.SensorData" />
 	</typeAliases>
 </configuration>

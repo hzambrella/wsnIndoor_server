@@ -10,9 +10,12 @@ public class Anchor implements Serializable {
 	private Integer floor;
 	private Integer anchorType;
 	private Integer status;
-	private Integer x;
-	private Integer y;
+	private Float x;
+	private Float y;
 	private String sn;
+	private Integer energy;
+	private String createTime;
+	private String updateTime;
 	
 	public Integer getAnchorId() {
 		return anchorId;
@@ -50,16 +53,16 @@ public class Anchor implements Serializable {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public Integer getX() {
+	public Float getX() {
 		return x;
 	}
-	public void setX(Integer x) {
+	public void setX(Float x) {
 		this.x = x;
 	}
-	public Integer getY() {
+	public Float getY() {
 		return y;
 	}
-	public void setY(Integer y) {
+	public void setY(Float y) {
 		this.y = y;
 	}
 	public String getSn() {
@@ -68,5 +71,24 @@ public class Anchor implements Serializable {
 	public void setSn(String sn) {
 		this.sn = sn;
 	}
+	public Integer getEnergy() {
+		return energy;
+	}
+	public void setEnergy(Integer energy) {
+		this.energy = energy;
+	}
+	public String getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+	public String getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
+	
 
 }

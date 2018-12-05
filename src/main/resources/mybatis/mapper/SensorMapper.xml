@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hz.wsnIndoorBack.mapper.SensorMapper">
+	<sql id="sensorSql">
+		sid, nid, status, energy, sensor_type as sensorType,
+		to_char(update_time,'YYYY年MM月DD日 HH:MI') as updateTime,
+		to_char(create_time,'YYYY年MM月DD日 HH:MI') as createTime,
+		haslocation,
+		position[0] as x,position[1] as y, sn
+	</sql>
+	<select id="getSensorsByNid" resultType="sensor">
+		SELECT
+		<include refid="sensorSql"></include>
+		FROM public.sensor where nid=${nid};
+	</select>
+
+	<sql id="sensorDataSql">
+		id, sid, temperature, humidity, lux, flame, smog,
+		poison,to_char(create_time,'YYYY年MM月DD日 HH:MI') as createTime
+	</sql>
+
+	<select id="getLatestSensorDataBySid" resultType="sensorData">
+		SELECT
+		<include refid="sensorDataSql"></include>
+		FROM sensor_data
+		where create_time=(SELECT max(create_time) as
+		create_time
+		FROM sensor_data
+		where sid=${sid} group by sid) and
+		sid=${sid}
+	</select>
+
+	<select id="getSensorDataBySid" resultType="sensorData">
+		SELECT
+		<include refid="sensorDataSql"></include>
+		FROM sensor_data where sid=${sid} order by create_time desc limit
+		${limit}
+	</select>
+</mapper>

@@ -16,12 +16,15 @@ import com.hz.wsnIndoorBack.DTO.Result;
 import com.hz.wsnIndoorBack.mapper.BuildMapper;
 import com.hz.wsnIndoorBack.mapper.MapMapper;
 import com.hz.wsnIndoorBack.mapper.NetMapper;
+import com.hz.wsnIndoorBack.mapper.SensorMapper;
 import com.hz.wsnIndoorBack.model.Anchor;
 import com.hz.wsnIndoorBack.model.BaseMapInfo;
 import com.hz.wsnIndoorBack.model.BuildMapRel;
 import com.hz.wsnIndoorBack.model.Building;
 import com.hz.wsnIndoorBack.model.Map;
 import com.hz.wsnIndoorBack.model.Network;
+import com.hz.wsnIndoorBack.model.Sensor;
+import com.hz.wsnIndoorBack.model.SensorData;
 import com.hz.wsnIndoorBack.service.INetService;
 
 @RestController
@@ -33,6 +36,8 @@ public class BackDataController {
 	private MapMapper mapMapper;
 	@Autowired
 	private NetMapper netMapper;
+	@Autowired
+	private SensorMapper sensorMapper;
 	@Autowired
 	private INetService netService;
 
@@ -101,7 +106,8 @@ public class BackDataController {
 	}
 
 	@GetMapping("/networks")
-	public Result<PageInfo<Network>> networks(@RequestParam(value = "page", required = false) Integer page,
+	public Result<PageInfo<Network>> networks(
+			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "bid") Integer bid) {
 		if (page == null || page == 0) {
 			page = 1;
@@ -120,6 +126,33 @@ public class BackDataController {
 			@RequestParam(value = "anchorType", required = false) Integer anchorType) {
 		List<Anchor> anchors = netMapper.getAnchors(bid, floor, anchorType);
 		Result<List<Anchor>> result = new Result<>(anchors);
+		return result;
+	}
+
+	@GetMapping("/sensors")
+	public Result<List<Sensor>> sensors(@RequestParam(value = "nid") Integer nid) {
+		List<Sensor> sensors = sensorMapper.getSensorsByNid(nid);
+		Result<List<Sensor>> result = new Result<>(sensors);
+		return result;
+	}
+
+	@GetMapping("/sensor/latest")
+	public Result<SensorData> sensorLatestData(
+			@RequestParam(value = "sid") Integer sid) {
+		SensorData data = sensorMapper.getLatestSensorDataBySid(sid);
+		Result<SensorData> result = new Result<>(data);
+		return result;
+	}
+
+	@GetMapping("/sensor/data")
+	public Result<List<SensorData>> sensorData(
+			@RequestParam(value = "sid") Integer sid,
+			@RequestParam(value = "limit", required = false) Integer limit) {
+		if (limit == null) {
+			limit = SensorData.LIMIT;
+		}
+		List<SensorData> data = sensorMapper.getSensorDataBySid(sid, limit);
+		Result<List<SensorData>> result = new Result<>(data);
 		return result;
 	}
 }
