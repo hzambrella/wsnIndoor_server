@@ -2,38 +2,165 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hz.wsnIndoorBack.mapper.SensorMapper">
 	<sql id="sensorSql">
-		sid, nid, status, energy, sensor_type as sensorType,
-		to_char(update_time,'YYYY年MM月DD日 HH:MI') as updateTime,
-		to_char(create_time,'YYYY年MM月DD日 HH:MI') as createTime,
-		haslocation,
-		position[0] as x,position[1] as y, sn
+		t1.sid, t1.nid, t1.status, t1.energy, t1.sensor_type as
+		sensorType,
+		to_char(t1.update_time,'YYYY年MM月DD日 HH24:MI') as updateTime,
+		to_char(t1.create_time,'YYYY年MM月DD日 HH24:MI') as createTime,
+		t1.haslocation,
+		t1.position[0] as x,t1.position[1] as y, t1.sn
 	</sql>
-	<select id="getSensorsByNid" resultType="sensor">
-		SELECT
-		<include refid="sensorSql"></include>
-		FROM public.sensor where nid=${nid};
-	</select>
 
 	<sql id="sensorDataSql">
 		id, sid, temperature, humidity, lux, flame, smog,
-		poison,to_char(create_time,'YYYY年MM月DD日 HH:MI') as createTime
+		poison,to_char(create_time,'YYYY年MM月DD日 HH24:MI') as createTime
 	</sql>
 
-	<select id="getLatestSensorDataBySid" resultType="sensorData">
+	<resultMap id="sensorResult" type="sensor">
+		<id property="sid" column="sid" />
+		<result property="nid" column="nid" />
+		<result property="status" column="status" />
+		<result property="energy" column="energy" />
+		<result property="sn" column="sn" />
+		<result property="hasLocation" column="haslocation" />
+		<result property="sensorType" column="sensorType" />
+		<result property="createTime" column="createTime" />
+		<result property="updateTime" column="updateTime" />
+		<result property="x" column="x" />
+		<result property="y" column="y" />
+		<!-- <association property="latestData" column="sid" select="com.hz.wsnIndoorBack.mapper.SensorMapper.getLatestSensorDataBySid" 
+			/> -->
+		<association property="latestData" column="sid" javaType="sensorData"
+			resultMap="sensorDataResult" />
+	</resultMap>
+
+	<resultMap id="sensorDataResult" type="sensorData">
+		<id property="id" column="id" />
+		<result property="sid" column="sid" />
+		<result property="temperature" column="temperature" />
+		<result property="humidity" column="humidity" />
+		<result property="lux" column="lux" />
+		<result property="flame" column="flame" />
+		<result property="smog" column="smog" />
+		<result property="poison" column="poison" />
+		<result property="createTime" column="createTime" />
+	</resultMap>
+
+	<select id="getSensorsByNid" resultMap="sensorResult">
+		SELECT
+		t1.sid,
+		t1.nid,t1.status, t1.energy, t1.sensor_type as sensorType,
+		to_char(t1.update_time,'YYYY年MM月DD日 HH24:MI') as updateTime,
+		to_char(t1.create_time,'YYYY年MM月DD日 HH24:MI') as createTime,
+		t1.haslocation,
+		t1.position[0] as x,t1.position[1] as y,t1.sn,
+		t2.id,t2.sid,t2.temperature, t2.humidity, t2.lux, t2.flame, t2.smog,
+		t2.poison,t2.createTime
+		FROM public.sensor as t1 left join (
+		SELECT
+		id,
+		sid, temperature, humidity, lux, flame, smog,
+		poison,to_char(create_time,'YYYY年MM月DD日 HH24:MI') as createTime
+		FROM
+		sensor_data as ti1
+		where create_time=(SELECT max(create_time) as
+		create_time
+		FROM sensor_data as ti2
+		where ti1.sid=ti2.sid
+		group by sid)
+		)as t2 on t1.sid=t2.sid where nid=#{nid};
+	</select>
+
+	<select id="getLatestSensorDataBySid" parameterType="int"
+		resultMap="sensorDataResult">
 		SELECT
 		<include refid="sensorDataSql"></include>
 		FROM sensor_data
 		where create_time=(SELECT max(create_time) as
 		create_time
 		FROM sensor_data
-		where sid=${sid} group by sid) and
-		sid=${sid}
+		where sid=#{sid} group by sid) and
+		sid=#{sid}
 	</select>
 
 	<select id="getSensorDataBySid" resultType="sensorData">
 		SELECT
 		<include refid="sensorDataSql"></include>
-		FROM sensor_data where sid=${sid} order by create_time desc limit
-		${limit}
+		FROM sensor_data where sid=#{sid} order by create_time desc limit
+		#{limit}
 	</select>
+
+	<insert id="insertSensorData" parameterType="sensorData">
+		INSERT INTO
+		public.sensor_data
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sid!=null">
+				sid,
+			</if>
+			<if test="temperature!=null">
+				temperature,
+			</if>
+			<if test="humidity!=null">
+				humidity,
+			</if>
+			<if test="lux!=null">
+				lux,
+			</if>
+			<if test="flame!=null">
+				flame,
+			</if>
+			<if test="smog!=null">
+				smog,
+			</if>
+			<if test="poison!=null">
+				poison,
+			</if>
+			<if test="createTime!=null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+			<if test="sid!=null">
+				#{sid},
+			</if>
+			<if test="temperature!=null">
+				#{temperature},
+			</if>
+			<if test="humidity!=null">
+				#{humidity},
+			</if>
+			<if test="lux!=null">
+				#{lux},
+			</if>
+			<if test="flame!=null">
+				#{flame},
+			</if>
+			<if test="smog!=null">
+				#{smog},
+			</if>
+			<if test="poison!=null">
+				#{poison},
+			</if>
+			<if test="createTime!=null">
+				to_timestamp(#{createTime},'yyyy-MM-dd HH24:MI:SS'),
+			</if>
+		</trim>
+	</insert>
+
+	<insert id="insertSensorDatas" parameterType="List">
+		INSERT INTO
+		sensor_data
+		(sid, temperature, humidity, lux, flame, smog,
+		poison, create_time)VALUES
+		<foreach collection="list" item="item" separator=",">
+			(#{item.sid},#{item.temperature},#{item.humidity},#{item.lux},
+			#{item.flame},#{item.smog},#{item.poison},#{item.createTime})
+		</foreach>
+	</insert>
+
+	<delete id="deleteSensorData" parameterType="int">
+		delete from sensor_data
+		<if test="sid==0">
+			where sid=#{sid}
+		</if>
+	</delete>
 </mapper>

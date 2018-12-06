@@ -16,6 +16,8 @@ public class Sensor implements Serializable {
 	private Float y;
 	private String createTime;
 	private String updateTime;
+	private SensorData latestData;
+	
 	public Integer getSid() {
 		return sid;
 	}
@@ -83,4 +85,11 @@ public class Sensor implements Serializable {
 	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
 	}
+	public SensorData getLatestData() {
+		return latestData;
+	}
+	public void setLatestData(SensorData latestData) {
+		this.latestData = latestData;
+	}
+	
 }

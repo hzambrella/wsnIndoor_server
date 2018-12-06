@@ -6,8 +6,8 @@
 		t1.map_id as mapId,
 		t1.title, t1.status,t1.descrip,
 		to_char(t1.create_time,'YYYY年MM月DD日
-		HH:MI')as createTime,
-		to_char(t1.update_time,'YYYY年MM月DD日 HH:MI')as
+		HH24:MI')as createTime,
+		to_char(t1.update_time,'YYYY年MM月DD日 HH24:MI')as
 		updateTime,
 		t3.name as
 		buildName,t2.floor as floor,t3.height,t2.bid as bid
