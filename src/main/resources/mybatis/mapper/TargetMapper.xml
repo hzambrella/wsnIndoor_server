@@ -81,9 +81,11 @@
 	</delete>
 
 	<sql id="targetSql">
-		target_id as targetId, name, type, unit, id_card as idCard, mobile, 
+		target_id as targetId, name, type, unit, id_card as idCard,
+		mobile,
 		to_char(create_time,'YYYY年MM月DD日 HH24:MI') as createTime,
-		to_char(leave_time,'YYYY年MM月DD日 HH24:MI') as leaveTime,
+		to_char(leave_time,'YYYY年MM月DD日 HH24:MI') as
+		leaveTime,
 		remark, bid
 	</sql>
 
@@ -172,4 +174,15 @@
 		</trim>
 	</insert>
 
+	<select id="getTrailPointsByTargetId" resultType="trailPoint">
+		SELECT id,
+		target_id as targetId, trail_id as trailId, point[0] as x,
+		point[1] as y, nid,to_char(create_time,'YYYY年MM月DD日 HH24:MI:SS') as createTime
+		FROM trail;
+	</select>
+
+	<select id="test" resultType="TP">
+		select ${targetId}as targetId,point
+		as point from trail where target_id=${targetId};
+	</select>
 </mapper>

@@ -21,5 +21,6 @@
 		<typeAlias alias="sensorData" type="com.hz.wsnIndoorBack.model.SensorData" />
 		<typeAlias alias="target" type="com.hz.wsnIndoorBack.model.Target" />
 		<typeAlias alias="trailPoint" type="com.hz.wsnIndoorBack.model.TrailPoint" />
+		<typeAlias alias="tp" type="com.hz.wsnIndoorBack.model.TP" />
 	</typeAliases>
 </configuration>

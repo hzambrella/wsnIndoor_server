@@ -1,15 +1,30 @@
 package com.hz.wsnIndoorBack.DTO;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Trail implements Serializable {
-	private int trailId;
+	private String trailId;
 	private int targetId;
 	private int nid;
-	private Float[][]points;
+	private List<Float[]>points;
 	private String startTime;
 	private String endTime;
+	
+	
+	public Trail() {
+		super();
+	}
+	
+	public Trail(int targetId,String trailId,int nid) {
+		this.targetId=targetId;
+		this.trailId=trailId;
+		this.nid=nid;
+		this.points=new ArrayList<Float[]>();
+	}
+	
 	public int getTargetId() {
 		return targetId;
 	}
@@ -22,18 +37,23 @@ public class Trail implements Serializable {
 	public void setNid(int nid) {
 		this.nid = nid;
 	}
-	public int getTrailId() {
+	
+	public String getTrailId() {
 		return trailId;
 	}
-	public void setTrailId(int trailId) {
-		this.trailId = trailId;
-	}
-	public Float[][] getPoints() {
+
+	public List<Float[]> getPoints() {
 		return points;
 	}
-	public void setPoints(Float[][] points) {
+
+	public void setPoints(List<Float[]> points) {
 		this.points = points;
 	}
+
+	public void setTrailId(String trailId) {
+		this.trailId = trailId;
+	}
+
 	public String getStartTime() {
 		return startTime;
 	}

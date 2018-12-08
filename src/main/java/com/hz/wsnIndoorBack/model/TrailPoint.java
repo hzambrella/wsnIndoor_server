@@ -6,8 +6,8 @@ import java.io.Serializable;
 public class TrailPoint implements Serializable {
 	private int targetId;
 	private String trailId;
-	private int x;
-	private int y;
+	private float x;
+	private float y;
 	private int nid;
 	private String createTime;
 	public int getTargetId() {
@@ -22,16 +22,16 @@ public class TrailPoint implements Serializable {
 	public void setTrailId(String trailId) {
 		this.trailId = trailId;
 	}
-	public int getX() {
+	public float getX() {
 		return x;
 	}
-	public void setX(int x) {
+	public void setX(float x) {
 		this.x = x;
 	}
-	public int getY() {
+	public float getY() {
 		return y;
 	}
-	public void setY(int y) {
+	public void setY(float y) {
 		this.y = y;
 	}
 	public int getNid() {
