@@ -10,7 +10,6 @@ import com.hz.wsnIndoorBack.model.SensorData;
 public interface SensorMapper {
 	// 不要分页
 	public List<Sensor> getSensorsByNid(@Param("nid") Integer nid);
-
 	public SensorData getLatestSensorDataBySid(int sid);
 
 	public List<SensorData> getSensorDataBySid(@Param("sid") Integer sid,

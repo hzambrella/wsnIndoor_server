@@ -42,7 +42,8 @@
 		t1.position[0] as x,
 		t1.position[1] as y,
 		t1.sn as sn,
-		t1.energy as energy,
+		t1.energy as
+		energy,
 		to_char(t1.create_time,'YYYY年MM月DD日 HH24:MI')as createTime,
 		to_char(t1.update_time,'YYYY年MM月DD日 HH24:MI')as updateTime
 	</sql>

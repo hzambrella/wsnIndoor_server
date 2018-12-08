@@ -3,7 +3,8 @@
 <mapper namespace="com.hz.wsnIndoorBack.mapper.BuildMapper" >
     
     <sql id="Base_Column_List" >
-        bid, name, position[0] as x, position[1] as y, descrip,address,height
+        building.bid, building.name, building.position[0] as x, building.position[1] as y, 
+        building.descrip,building.address,building.height
     </sql>
  
     <select id="getBuildings" resultType="Building"  >
@@ -11,4 +12,13 @@
        <include refid="Base_Column_List" />
 	   FROM building
     </select>
+    
+     <select id="getBuildByNid" resultType="Building"  >
+       SELECT 
+       <include refid="Base_Column_List" />
+	   FROM building left join build_network on building.bid=build_network.bid
+	   where build_network.nid=#{nid};
+    </select>
+    
+    
 </mapper>

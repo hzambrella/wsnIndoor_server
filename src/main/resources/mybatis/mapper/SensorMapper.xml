@@ -67,7 +67,7 @@
 		FROM sensor_data as ti2
 		where ti1.sid=ti2.sid
 		group by sid)
-		)as t2 on t1.sid=t2.sid where nid=#{nid};
+		)as t2 on t1.sid=t2.sid where nid=#{nid} and t1.status!=3;
 	</select>
 
 	<select id="getLatestSensorDataBySid" parameterType="int"

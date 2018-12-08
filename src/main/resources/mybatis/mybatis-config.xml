@@ -19,5 +19,7 @@
 		<typeAlias alias="buildMapRel" type="com.hz.wsnIndoorBack.model.BuildMapRel" />
 		<typeAlias alias="sensor" type="com.hz.wsnIndoorBack.model.Sensor" />
 		<typeAlias alias="sensorData" type="com.hz.wsnIndoorBack.model.SensorData" />
+		<typeAlias alias="target" type="com.hz.wsnIndoorBack.model.Target" />
+		<typeAlias alias="trailPoint" type="com.hz.wsnIndoorBack.model.TrailPoint" />
 	</typeAliases>
 </configuration>

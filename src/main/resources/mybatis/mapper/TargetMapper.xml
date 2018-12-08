@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hz.wsnIndoorBack.mapper.TargetMapper">
+
+	<!-- <sql id="trailPointsInMockData" > bid, name, position[0] as x, position[1] 
+		as y, descrip,address,height </sql> -->
+
+
+	<insert id="registTarget">
+		INSERT INTO public.target_register
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="target.targetId!=null">
+				target_id,
+			</if>
+			<if test="target.name!=null">
+				name,
+			</if>
+			<if test="target.bid!=null">
+				bid,
+			</if>
+			<if test="target.type!=null">
+				type,
+			</if>
+			<if test="target.unit!=null">
+				unit,
+			</if>
+			<if test="target.idCard!=null">
+				id_card,
+			</if>
+			<if test="target.mobile!=null">
+				mobile,
+			</if>
+			<if test="target.createTime!=null">
+				create_time,
+			</if>
+			<if test="target.leaveTime!=null">
+				leave_time,
+			</if>
+			<if test="target.remark!=null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+			<if test="target.targetId!=null">
+				#{target.targetId},
+			</if>
+			<if test="target.name!=null">
+				#{target.name},
+			</if>
+			<if test="target.bid!=null">
+				#{target.bid},
+			</if>
+			<if test="target.type!=null">
+				#{target.type},
+			</if>
+			<if test="target.unit!=null">
+				#{target.unit},
+			</if>
+			<if test="target.IDCard!=null">
+				#{target.idCard},
+			</if>
+			<if test="target.mobile!=null">
+				#{target.mobile},
+			</if>
+			<if test="target.createTime!=null">
+				to_timestamp(#{target.createTime},'yyyy-MM-dd-HH24:MI:SS'),
+			</if>
+			<if test="target.leaveTime!=null">
+				to_timestamp(#{target.leaveTime},'yyyy-MM-dd-HH24:MI:SS'),
+			</if>
+			<if test="target.remark!=null">
+				#{target.remark},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="deleteTarget">
+		DELETE FROM public.target_register
+		WHERE
+		target_id=#{targetId}
+	</delete>
+
+	<sql id="targetSql">
+		target_id as targetId, name, type, unit, id_card as idCard, mobile, 
+		to_char(create_time,'YYYY年MM月DD日 HH24:MI') as createTime,
+		to_char(leave_time,'YYYY年MM月DD日 HH24:MI') as leaveTime,
+		remark, bid
+	</sql>
+
+	<select id="getTargetsByNidAndTime" resultType="target">
+		select
+		<include refid="targetSql"></include>
+		from target_register
+		where exists(
+		SELECT
+		target_id
+		FROM public.trail
+		where create_time between
+		to_timestamp('${startTime}','YYYY-MM-DD-HH24')
+		and
+		to_timestamp('${endTime}','YYYY-MM-DD-HH24') and nid=${nid} group by
+		target_id
+		);
+	</select>
+
+	<select id="getTrailPointsInMockData" resultType="trailPoint">
+		SELECT gid as
+		id,concat('20181201',1,split_part(layer,'_',2))as
+		targetId,1 as
+		nid,
+		st_x(geom)as x,st_y(geom)as
+		y,split_part(layer,'_',3) as trailId
+		FROM
+		gsimu_${nid}_trail
+		where layer
+		like 'trail_${targetId}%';
+	</select>
+
+	<update id="createTrailPointTableMock">
+		drop table if exists
+		public.trail;
+		CREATE TABLE if not
+		exists
+		public.trail
+		(
+		id serial primary key,target_id
+		integer NOT NULL,
+		trail_id character varying(32) NOT NULL,
+		point point
+		NOT NULL,
+		nid
+		Integer NOT NULL,
+		create_time timestamp with time zone NOT NULL
+		)
+	</update>
+
+	<insert id="insertTrailPoint">
+		INSERT INTO public.trail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="point.targetId!=null">
+				target_id,
+			</if>
+			<if test="point.nid!=null">
+				nid,
+			</if>
+			<if test="point.trailId!=null">
+				trail_id,
+			</if>
+			<if test="point.x!=null">
+				point,
+			</if>
+			<if test="point.createTime!=null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+			<if test="point.targetId!=null">
+				#{point.targetId},
+			</if>
+			<if test="point.nid!=null">
+				#{point.nid},
+			</if>
+			<if test="point.trailId!=null">
+				#{point.trailId},
+			</if>
+			<if test="point.x!=null">
+				point(#{point.x},#{point.y}),
+			</if>
+			<if test="point.createTime!=null">
+				to_timestamp(#{point.createTime},'yyyy-MM-dd-HH24:MI:SS'),
+			</if>
+		</trim>
+	</insert>
+
+</mapper>
