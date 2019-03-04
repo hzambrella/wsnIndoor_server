@@ -9,8 +9,8 @@ import com.hz.wsnIndoorBack.model.BuildMapRel;
 import com.hz.wsnIndoorBack.model.Map;
 
 public interface MapMapper {
-	List<BuildMapRel>getBuildMapRel(@Param("bid")int bid);
-	List<Map>getMaps();
-	Map getMapById(@Param("mapId")int mapId);
-	BaseMapInfo getBaseMapInfo(@Param("mapId")int mapId);
+	List<BuildMapRel>getBuildMapRel(@Param("bid")int bid);//根据bid获取楼层和地图的映射
+	List<Map>getMaps();//获取所有地图
+	Map getMapById(@Param("mapId")int mapId);//mapID获取地图对象
+	BaseMapInfo getBaseMapInfo(@Param("mapId")int mapId);//mapID获取底图对象
 }

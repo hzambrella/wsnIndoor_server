@@ -1,14 +1,47 @@
 $(function () {
+    var defaultGisData = {
+        code: '',
+        host: '',
+        serverType: '',
+        workspace: '',
+        requestType: '',
+        layers: '',
+        x_min: 0,
+        y_min: 0,
+        x_max: 0,
+        y_max: 0,
+        zoom_default: 0,
+        zoom_max: 0,
+        zoom_min: 0,
+    }
+
+    var defaultMapDetail = {
+        "mapId": 0,
+        "title": "",
+        "status": 1,
+        "descrip": "",
+        "createTime": "",
+        "updateTime": "",
+        "floor": 1,
+        "height": 1,
+        "buildName": "",
+        "bid": 0
+    }
+
     var app = new Vue({
-        el: "#app",
+        el: "#mainbox",
         data: {
             mapId: $("mapId").html(),
             finishLoading: true,
             title: '地图详情和修改',
             items: {},
+            baseMapData: defaultGisData,
+            mapDetail: defaultMapDetail,
+            floor: [],
+            GmapParamMeanMap:GmapParamMeanMap,
         },
         methods: {
-
+            back: routerBack
         }
     })
 
@@ -18,57 +51,69 @@ $(function () {
         app.finishLoading = false;
         //TODO:ajax
         setTimeout(function () {
-            app.finishLoading = true
-        }, 200)
+            app.mapDetail = getMapDetailMock().obj
+            //右边信息栏，显示第一个标签页
+            $('#mapDataTab li:eq(0) a').tab('show');
+            floorButton();
+            getBaseMapData(mapId)
+        }, 20)
     }
-   
-    var layers = [
-        new ol.layer.Image({
-            source: new ol.source.ImageWMS({
-                //crossOrigin: 'anonymous',
-                Layers:'hzmap:gdata_1_1_plane',
-                serverType: 'geoserver',
-                url: 'http://127.0.0.1:8083/geoserver/hzmap/wms'
-            })
-        })
-    ];
 
-    var projection = new ol.proj.Projection({
-        code: 'EPSG:404000',
-        units: 'm'
-    });
+    function getBaseMapData(mapId) {
+        //TODO:ajax
+        setTimeout(function () {
+            app.baseMapData = getBaseMapDataMock(mapId).obj;
+            loadMap(mapId, app.baseMapData )
+            app.finishLoading = true
+        }, 20)
+    }
 
-    var map = new ol.Map({
-        layers: layers,
-        target: 'indoorMap',
-        view: new ol.View({
-            center: [66, 19],
-            projection: projection,
-            zoom: 9
-        })
-    });
-    // var map = new ol.Map({
-    //     target: 'indoorMap',
-    //     layers: [
-    //         planelayer
-    //     ],
-    //     view: new ol.View({
-    //         projection: projectionBaseMap,
-    //         //center: ol.extent.getCenter(extentBaseMap),
-    //         zoom: 2,
-    //         maxZoom: 5,
-    //         minZoom: 1.2,
-    //     }),
-    //     // control: ol.control.defaults().extend([mousePositionControl])
-    // });
+    function floorButton() {
+        floor = new Array();
+        for (i = app.mapDetail.height; i > 0; i--) {
+            floor.push(i + "F");
+        }
+        app.floor = floor
+    }
 
-    // var projectionBaseMap = new ol.proj.get("EPSG:404000");
-    // var planelayer = new ol.layer.Image({
-    //     source: new ol.source.ImageWMS({
-    //         url: 'http://127.0.0.1:8080/geoserver/hzmap/wms', //这里添加静态图片的地址
-    //         projection: projectionBaseMap,
-    //         //imageExtent: extentBaseMap,
-    //         // crossOrigin: 'anonymous'
-    //     })
-    // })
+    // function loadMap() {
+    //     var mapMess = getBaseMapMock().obj;
+    //     var url = mapMess.host + '/' + mapMess.serverType + '/' + mapMess.workspace + '/' + mapMess.requestType;
+    //     var layersName = mapMess.workspace + ":" + mapMess.layers
+    //     var extentBaseMap = [mapMess.x_min, mapMess.y_min, mapMess.x_max, mapMess.y_max];
+
+    //     var projectionBaseMap = new ol.proj.Projection({
+    //         code: mapMess.code,
+    //         units: 'pixels',
+    //         // extent: extentBaseMap,
+    //         extent: extentBaseMap,
+    //     });
+
+    //     var map = new ol.Map({
+    //         target: 'indoorMap',
+    //         layers: [
+    //             new ol.layer.Image({
+    //                 source: new ol.source.ImageWMS({
+    //                     url: url,
+    //                     projection: projectionBaseMap,
+    //                     imageExtent: extentBaseMap,
+    //                     serverType: mapMess.serverType,
+    //                     params: {
+    //                         'layers': layersName,
+    //                     },
+    //                     // crossOrigin: 'anonymous'
+    //                 })
+    //             }),
+    //         ],
+    //         view: new ol.View({
+    //             projection: projectionBaseMap,
+    //             center: ol.extent.getCenter(extentBaseMap),
+    //             zoom: mapMess.zoom_default,
+    //             maxZoom: mapMess.zoom_max,
+    //             minZoom: mapMess.zoom_min,
+    //         }),
+    //         // control: ol.control.defaults().extend([mousePositionControl])
+    //     });
+    //     return mapMess;
+    // }
 })

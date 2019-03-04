@@ -2,18 +2,24 @@ package com.hz.wsnIndoorBack.model;
 
 import java.io.Serializable;
 
+/**
+ * 环境数据
+ * @author haozhoa
+ *
+ */
 @SuppressWarnings("serial")
 public class SensorData implements Serializable{
-	public static final Integer LIMIT = 10;
 	private Integer id;
 	private Integer sid;
-	private Float temperature;
-	private Integer humidity;
-	private Integer lux;
-	private boolean flame;
-	private boolean smog;
-	private boolean poison;
+	private Float temperature; //温度
+	private Integer humidity;//湿度
+	private Integer lux;//光照
+	private boolean flame;//是否有明火
+	private boolean smog;//是否有烟雾
+	private boolean poison;//是否有毒气
 	private String createTime;
+	
+	public static final Integer DefaultLimit = 10;//列表数据限制默认值
 	
 	public Integer getId() {
 		return id;

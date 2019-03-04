@@ -26,8 +26,11 @@
 
     <!--Bootstrap4  -->
     <!--<link rel="stylesheet" href="../bootstrap-4.1.3-dist/css/bootstrap.min.css">
-    <script src="../js/vendor/popper.min.js"></script>
+
     <script src="../bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="../bootstrap-3.3.7/css/bootstrap.min.css">
+    <script src="../bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../js/vendor/popper.min.js"></script>
 
     <!--vue.js-->
     <script src="../js/vendor/vue.js"></script>
@@ -52,83 +55,230 @@
 </head>
 
 <body>
+    <p id="pageGroupId" style="display:none">Index</p>
     <p id="pageId" style="display:none">mapdetail</p>
-    <div class="mainbox">
+    <div id="mainbox" class="mainbox" v-cloak>
         <!--hearder是顶部-->
         <header class="top">
             <!--<img style="float:left;height:60px;margin:10px 10px" src="../images/logo.png" onclick="alert('hz网盘!!')" />-->
-            <p class="logo" onclick="alert('by:hz!!')">楼宇监控后台管理系统
-                <p>
-                    <div class="top_navigation" style="display:block;height:60px;margin:10px 10px;float:left;"></div>
-                    <div class="user_info">
-                        <img id="head_img" class="head_img" src="../images/head_default.png" />
-                        <span class="nickname">no_name21312313</span>
+            <p class="logo" onclick="alert('by:hz!!')">楼宇监控后台管理系统 </p>
+            <div class="top_navigation" style="display:block;height:60px;margin:10px 10px;float:left;"></div>
+            <div class="user_info">
+                <img id="head_img" class="head_img" src="../images/head_default.png" />
+                <span class="nickname">administrator_hz</span>
 
-                        <div id="user_info_detail" class="user_info_detail">
-                            <div class="user_info_detail_head">
-                                <img class="head_img" src="../images/head_default.png" />
-                                <span class="nickname">no_name21312313</span>
-                            </div>
-                            <!--<div class="user_info_detail_middle"></div>-->
-                            <ul>
-                                <li><a id="personal_info" href="javascript:void(0)">个人资料</a></li>
-                                <li><a id="help_center" href="javascript:void(0)">帮助中心</a></li>
-                                <li><a id="logout" href="javascript:void(0)">退出</a></li>
-                            </ul>
-                        </div>
-
+                <div id="user_info_detail" class="user_info_detail">
+                    <div class="user_info_detail_head">
+                        <img class="head_img" src="../images/head_default.png" />
+                        <span class="nickname">administrator_hz</span>
                     </div>
+                    <!--<div class="user_info_detail_middle"></div>-->
+                    <ul>
+                        <li><a id="personal_info" href="javascript:void(0)">个人资料</a></li>
+                        <li><a id="help_center" href="javascript:void(0)">帮助中心</a></li>
+                        <li><a id="logout" href="javascript:void(0)">退出</a></li>
+                    </ul>
+                </div>
+
+            </div>
         </header>
         <div class="left">
             <div class="con-left">
                 <div style="height:480px;width:100%;margin-top:10px">
-                    <ul id="leftNav" class="item-list">
+                    <leftnav group='index'></leftnav>
+                </div>
+                <!--<ul id='leftNav' class='item-list' v-cloak>
+                        <li v-for='(val,key) in leftNavRouter'>
+                            <a v-if='!val.level2' href='javascript:void(0)' :id='key'><i :class='val.icon'></i> {{val.name}}</a>
+                            <a v-else href="javascript:void(0)" :id='key' class='left-nav-level2' :for='val.level2Id'><i :class='val.icon'></i>{{val.name}}
+                            <span style='float:right'><i class='fa fa-bars'></i></span> </a>
+                            <ul :id='val.level2Id' class='item-list-level2'>
+                                <li v-for='(val2,key2) in val.level2'><a href='javascript:void(0)' :id=key2>{{val2.name}}</a></li>
+                            </ul>
+                        </li>
+                    </ul>-->
+
+                <!--<li><a class="select" href="javascript:void(0)" id="mapInfo"><i class="fa fa-map"></i> 地图管理</a></li>
                         <li><a href="javascript:void(0)" id="buildInfo"><i class="fa fa-building"></i> 楼宇信息</a></li>
                         <li><a class="select" href="javascript:void(0)" id="mapInfo"><i class="fa fa-map"></i> 地图管理</a></li>
-                        <li><a href="javascript:void(0)" id="netInfo"><i class="fa fa-connectdevelop"></i> 网络管理</a></li>
+                        <li>
+                            <a href="javascript:void(0)" id="netInfo" class="left-nav-level2" for="leftNavNetWorkLevel2"><i class="fa fa-rss"></i> 网络管理
+                            <span style="float:right"><i class="fa fa-bars"></i></span>  </a>
+                        </li>
+                        <ul id="leftNavNetWorkLevel2" class="item-list-level2">
+                            <li><a href="javascript:void(0)" id="anchorInfo">锚节点</a></li>
+                            <li><a href="javascript:void(0)" id="sinkInfo">汇聚节点</a></li>
+                            <li><a href="javascript:void(0)" id="coordinatorInfo">协调器</a></li>
+                            <li><a href="javascript:void(0)" id="performOfNet">性能</a></li>
+                        </ul>
                         <li><a href="javascript:void(0)" id="monitorInfo"><i class="fa fa-user"></i> 人员监控</a></li>
-                    </ul>
-                </div>
+                        <li><a href="javascript:void(0)" id="monitorInfo"><i class="fa fa-thermometer-0"></i> 环境监控</a></li>-->
             </div>
         </div>
 
         <div class="right" id="right">
-            <div id="app" class="content-main" style="background-color: green" v-cloak>
+            <div id="app" class="content-main">
                 <p id="mapId" style="display:none">1</p>
                 <div class="content-bar">
                     <div class="content-bar-left">
-                        <span class="content-bar-title">{{title}}</span>
-                        <span v-if="!finishLoading" class="content-bar-result-count data-loading">加载中</span>
-                        <span v-else class="content-bar-result-count"></span>
+                        <span class="content-bar-breadcrumb"><span class="breadcrumbback" v-on:click="back('mapInfo')">地图列表</span>/</span>
+                        <span class="content-bar-breadcrumb">{{title}}</span>
+                    </div>
+                    <div class="content-bar-right">
+                        <button id="mapDetailInfo" type="button" class="btn btn-primary" data-toggle="modal" data-target="#hintModal">修改地图信息</button>
+                        <button id="publishMap" type="button" class="btn btn-primary" data-toggle="modal" data-target="#hintModal">发布地图</button>
                     </div>
                 </div>
                 <div class="content-mapapp">
                     <div class="content-mapComponent">
                         <div class="map-all">
-                            <div class="map-tool">
+                            <!--<div class="map-tool">
 
-                            </div>
-                            <div class="map-entity">
+                            </div>-->
+                            <div class="map-entity" style="width: 90%;">
                                 <div id="indoorMap" class="indoormap"></div>
                             </div>
                             <div class="map-floor">
+                                <div class="btn-group btn-group-vertical map-floor-btngroup ">
+                                    <!--<button v-for="(value,index) in floor" class="btn btn-default" type="button" :class="{active:mapDetail.height-index==mapDetail.floor}">{{value}}</button>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="map-footer">
+                            <span v-if="!finishLoading" class="map-status data-loading">加载中</span>
+                            <span v-else class="map-status">加载完毕--地图名称：{{mapDetail.title}}</span>
+                        </div>
+                    </div>
 
+                    <div class="content-mapinfo">
+                        <!--地图相关数据的标签页-->
+                        <ul id="mapDataTab" class="nav nav-tabs" style="margin-top:10px">
+                            <li class="active">
+                                <a href="#mapData" data-toggle="tab">地图数据</a>
+                            </li>
+                            <li>
+                                <a href="#baseMapData" data-toggle="tab">底图数据</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" id="tabDropPOI" class="dropdown-toggle" data-toggle="dropdown">POI数据<b class="caret"></b></a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="tabDropPOI">
+                                    <li><a href="#poiData1" tabindex="-1" data-toggle="tab">POI1</a></li>
+                                    <li><a href="#poiData2" tabindex="-1" data-toggle="tab">POI2</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div id="mapDataTabContent" class="tab-content">
+                            <!--地图信息-->
+                            <div class="tab-pane fade in active" id="mapData">
+                                <table class="table table-bordered table-sm" style="margin-top:10px;" v-cloak>
+                                    <thead>
+                                        <tr>
+                                            <th width="25%">键</th>
+                                            <th width="75%">值</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>地图编号</td>
+                                            <td>{{mapDetail.mapId}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>标题</td>
+                                            <td>{{mapDetail.title}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>状态</td>
+                                            <td v-if="mapDetail.status==0">未发布</td>
+                                            <td v-if="mapDetail.status==1">已发布</td>
+                                            <td v-if="mapDetail.status==2">已锁定或废弃</td>
+                                        </tr>
+                                        <tr>
+                                            <td>创建时间</td>
+                                            <td>{{mapDetail.createTime}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>修改时间</td>
+                                            <td>{{mapDetail.updateTime}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>楼层</td>
+                                            <td>{{mapDetail.floor}}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>建筑物名</td>
+                                            <td>{{mapDetail.buildName}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>建筑物编号</td>
+                                            <td>{{mapDetail.bid}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--底图信息-->
+                            <div class="tab-pane fade" id="baseMapData">
+                                <table class="table table-bordered table-sm" style="margin-top:10px;" v-cloak>
+                                    <thead>
+                                        <tr>
+                                            <th width="25%">键</th>
+                                            <th width="25%">含义</th>
+                                            <th width="50%">值</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(value,key) in baseMapData">
+                                            <td>{{key}}</td>
+                                            <td>{{GmapParamMeanMap[key]}}</td>
+                                            <td>{{value}} <button type="button" class="modify-button btn btn-default" data-toggle="tooltip"
+                                                    title="修改">
+                                                    </button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--poi信息-->
+                            <div class="tab-pane fade" id="poiData1">
+                                <p>暂无</p>
+                            </div>
+                            <div class="tab-pane fade" id="poiData2">
+                                <p>暂无</p>
                             </div>
                         </div>
                     </div>
-                    <div class="content-mapinfo">
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
-                    </div>
+    <footer>
+        <p id="footer">推荐使用360浏览器或谷歌浏览器</p>
+    </footer>
+
+    <!-- 模态框,用data-toggle="modal" data-target="#hintModal来进行交互 -->
+    <div class="modal fade" id="hintModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">敬请期待</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    敬请期待....
+                </div>
+
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                 </div>
 
             </div>
         </div>
     </div>
-
-    <footer>
-        <p></p>
-    </footer>
-
 
     <!--顶部用户栏的延迟-->
     <script src="../js/lib/jquery.hoverdelay.js"></script>
@@ -141,6 +291,8 @@
 
     <!--app-->
     <script src="../js/back/app_back_map_detail.js"></script>
+    <!--gmap-->
+    <script src="../js/back/back_gmap.js"></script>
 
     <!--modal-->
     <link rel="stylesheet" type="text/css" href="../plugin/modal/css/modal.css">
@@ -156,56 +308,5 @@
     <script src="../plugin/box_container/js/box_container.js"></script>
 
     <script type="text/javascript">
-        var viewH = document.documentElement.clientHeight;
-        var right = document.getElementById("right");
-        right.style.height = (viewH - 95) + "px";
-
-
-        //控制hover的显示
-        var userDetailIsHover = false;
-
-        $("#user_info_detail").hoverDelay({
-            hoverEvent: function () {
-                userDetailIsHover = true;
-            },
-            outEvent: function () {
-                userDetailIsHover = false;
-                $("#user_info_detail").css("display", "none")
-            }
-        })
-
-        $("#head_img").hoverDelay({
-            hoverEvent: function () {
-                $("#user_info_detail").css("display", "block")
-            },
-            outDuring: 2000,
-            outEvent: function () {
-                if (!userDetailIsHover) {
-                    $("#user_info_detail").css("display", "none")
-                }
-                //$("#user_info_detail").css("display", "none")
-            }
-        });
-
-        /*测试蒙版和boxAlert*/
-        var $modal = $("#modal").modal()
-        //testModalAndBoxAlert()
-
-        function testModalAndBoxAlert() {
-            //确认
-            var modalOpt = {
-                'title': '标题',
-                'content': "内容",
-                'confirmFunc': function () {
-                    $modal.hideModal();
-                    // testMapContainer()
-                },
-                'cancelFunc': function () {
-                    $modal.hideModal();
-                }
-            }
-            $modal.boxAlert(modalOpt);
-            $modal.show();
-        }
     </script>
 </body>

@@ -33,6 +33,11 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
 
 		<!-- 测试 -->
 		<dependency>
@@ -41,7 +46,7 @@
 			<scope>test</scope>
 		</dependency>
 
-
+		<!-- springboot starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -68,7 +73,7 @@
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>1.3.2</version>
 		</dependency>
-
+		<!-- pagehelper 分页 -->
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper</artifactId>
@@ -76,7 +81,7 @@
 		</dependency>
 
 
-		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+		<!--fastjson -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>

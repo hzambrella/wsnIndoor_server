@@ -2,6 +2,11 @@ package com.hz.wsnIndoorBack.model;
 
 import java.io.Serializable;
 
+/**
+ * 点
+ * @author haozhoa
+ *
+ */
 @SuppressWarnings("serial")
 public class Point implements Serializable {
 	private Double x;

@@ -181,8 +181,8 @@
 		FROM trail;
 	</select>
 
-	<select id="test" resultType="TP">
+<!-- 	<select id="test" resultType="TP">
 		select ${targetId}as targetId,point
 		as point from trail where target_id=${targetId};
-	</select>
+	</select> -->
 </mapper>

@@ -1,7 +1,5 @@
 package com.hz.wsnIndoorBack;
 
-import static org.junit.Assert.assertTrue;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,7 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.Assert;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,15 +15,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.alibaba.fastjson.JSON;
-import com.hz.wsnIndoorBack.DTO.Result;
-import com.hz.wsnIndoorBack.DTO.Trail;
 import com.hz.wsnIndoorBack.mapper.BuildMapper;
 import com.hz.wsnIndoorBack.mapper.TargetMapper;
 import com.hz.wsnIndoorBack.model.Building;
-import com.hz.wsnIndoorBack.model.TP;
 import com.hz.wsnIndoorBack.model.Target;
 import com.hz.wsnIndoorBack.model.TrailPoint;
-import com.hz.wsnIndoorBack.service.ITargetService;
 
 /**
  * Unit test for simple App.
@@ -47,8 +40,11 @@ public class TargetDataMock {
 	private String dateMockDay = "2018-12-1";
 	private String dateMock = dateMockDay + "-11:50:06";
 	private int frequence = 10;// 采样时间
-
-	// 生成测试数据。不需要mock数据时，不要取消@Test的注释。
+                  
+	/**
+	 *  生成测试数据。不需要mock数据时，一定要注释掉 @Test。
+	 * @throws ParseException
+	 */
 	//@Test
 	public void createTrailData() throws ParseException {
 		List<TrailPoint> trailPoints = targetMapper.getTrailPointsInMockData(

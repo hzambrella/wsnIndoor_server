@@ -2,10 +2,15 @@ package com.hz.wsnIndoorBack.model;
 
 import java.io.Serializable;
 
+/**
+ * 网关（汇聚节点）
+ * @author haozhoa
+ *
+ */
 @SuppressWarnings("serial")
 public class Sink implements Serializable {
 	private Integer sinkId;
-	private Integer status;
+	private Integer status;//0-关闭 1-打开 2-尚未使用 3-废弃
 	private String sn;
 	private Integer bid;
 	public Integer getSinkId() {

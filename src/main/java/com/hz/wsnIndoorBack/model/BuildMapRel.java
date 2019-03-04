@@ -3,7 +3,7 @@ package com.hz.wsnIndoorBack.model;
 import java.io.Serializable;
 
 /**
- * 建筑和地图关系，用于应用中的楼层索引。
+ * 建筑和地图映射关系，用于应用中的楼层索引。
  * 
  * @author haozhoa
  *
@@ -14,6 +14,7 @@ public class BuildMapRel implements Serializable {
 	private Integer bid;
 	private Integer floor;
 	private Integer mapId;
+	
 	public Integer getBid() {
 		return bid;
 	}

@@ -6,10 +6,16 @@ import java.util.List;
 import com.hz.wsnIndoorBack.model.Coordinator;
 import com.hz.wsnIndoorBack.model.Sink;
 
+/**
+ * 无线传感器连接设备
+ * @author haozhoa
+ *
+ */
 @SuppressWarnings("serial")
 public class NetComDev implements Serializable{
-	private List<Coordinator>coordinators;
-	private List<Sink>sinks;
+	private List<Coordinator>coordinators;//协调器
+	private List<Sink>sinks;//网关
+	
 	public List<Coordinator> getCoordinators() {
 		return coordinators;
 	}

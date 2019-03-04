@@ -8,20 +8,21 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class BaseMapInfo implements Serializable{
-	private int mapId;
-	private String code;
-	private String host;
-	private String serverType;
-	private String workspace;
-	private String requestType;
-	private String layers;
-	private Double x_min;
-	private Double y_min;
-	private Double x_max;
-	private Double y_max;
-	private Double zoom_default;
-	private Double zoom_max;
-	private Double zoom_min;
+	private int mapId; //地图id
+	private String code; //空间参考标识符(例如ESPG:3857) 
+	private String host;//地图服务器地址[:端口]
+	private String serverType;//服务器类型(例如GeoServer,ArcServer)
+	private String workspace;//GIS服务器的工作空间
+	private String requestType;//请求类型(OGC)
+	private String layers;//图层名
+	private Double x_min;//地图范围-横向最小值
+	private Double y_min;//地图范围-横向最大值
+	private Double x_max;//地图范围-纵向最小值
+	private Double y_max;//地图范围-纵向最大值
+	private Double zoom_default;//地图默认缩放值
+	private Double zoom_max;//地图最小缩放值
+	private Double zoom_min;//地图最大缩放值
+	
 	public int getMapId() {
 		return mapId;
 	}

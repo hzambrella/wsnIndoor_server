@@ -2,6 +2,11 @@ package com.hz.wsnIndoorBack.model;
 
 import java.io.Serializable;
 
+/**
+ * 轨迹点
+ * @author haozhoa
+ *
+ */
 @SuppressWarnings("serial")
 public class TrailPoint implements Serializable {
 	private int targetId;

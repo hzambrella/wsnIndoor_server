@@ -2,21 +2,25 @@ package com.hz.wsnIndoorBack.model;
 
 import java.io.Serializable;
 
-
+/**
+ * 环境传感器
+ * @author haozhoa
+ *
+ */
 @SuppressWarnings("serial")
 public class Sensor implements Serializable {
 	private Integer sid;
-	private String sn;
+	private String sn;//序列号
 	private Integer nid;
-	private Integer status;
+	private Integer status;// 0：关闭 1：打开 2：故障 3：关闭
 	private Integer energy;
-	private Integer sensorType;
-	private boolean hasLocation;
+	private Integer sensorType;//'传感器类型 默认是多功能传感器-0'
+	private boolean hasLocation;//是否定位
 	private Float x;
 	private Float y;
 	private String createTime;
 	private String updateTime;
-	private SensorData latestData;
+	private SensorData latestData; //最新数据
 	
 	public Integer getSid() {
 		return sid;

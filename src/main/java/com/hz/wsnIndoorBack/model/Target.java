@@ -2,20 +2,23 @@ package com.hz.wsnIndoorBack.model;
 
 import java.io.Serializable;
 
+/**
+ * 监测的移动目标
+ * @author haozhoa
+ *
+ */
 @SuppressWarnings("serial")
-// target_id(主键),name(名字),type(类型 0:员工 1:访客 2:机器人 ),
-// unit(单位),ID_card(身份证),mobile(手机),create_time,leave_time(离开的时间),remark(备注)
 public class Target implements Serializable {
-	private int targetId;
-	private String name;
+	private int targetId;//主键)
+	private String name;//名字
 	private int bid;
-	private int type;
-	private String unit;
-	private String idCard;
-	private String mobile;
+	private int type;//类型 0:员工 1:访客 2:机器人
+	private String unit;//单位
+	private String idCard;//身份证号
+	private String mobile;//手机号
 	private String createTime;
-	private String leaveTime;
-	private String remark;
+	private String leaveTime;//离开的时间
+	private String remark;//备注
 
 	public int getTargetId() {
 		return targetId;

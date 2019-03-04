@@ -1,17 +1,11 @@
 $(function () {
     //var pageId = $("#pageId").html();
-    var pageInfo = {
-        resultCount: 1,
-        page: 1,
-        totalPage: 1,
-    }
     var app = new Vue({
-        el: "#app",
+        el: "#mainbox",
         data: {
             finishLoading: true,
             title: '地图管理',
-            pageInfo: pageInfo,
-            items: {},
+            data: commonPageData,
         },
         methods: {
             showLoc: function showLoc() {
@@ -38,7 +32,7 @@ $(function () {
         app.finishLoading = false;
         //TODO:ajax
         setTimeout(function () {
-            app.items = getMockData('map').obj.list;
+            app.data = getMockData('map');
             app.finishLoading = true;
         }, 200)
     }

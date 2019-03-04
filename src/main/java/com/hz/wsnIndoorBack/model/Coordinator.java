@@ -1,16 +1,21 @@
 package com.hz.wsnIndoorBack.model;
 
 import java.io.Serializable;
-
+/**
+ * 协调器
+ * @author haozhoa
+ *
+ */
 @SuppressWarnings("serial")
 public class Coordinator implements Serializable {
 	private Integer coorId;
-	private Integer status;
+	private Integer status;// 0-关闭 1-打开 2-废弃
 	private String sn;
 	private Integer bid;
 	private Integer nid;
 	private Integer floor;
-	private String panId;
+	private String panId;//PANID
+	
 	public Integer getBid() {
 		return bid;
 	}

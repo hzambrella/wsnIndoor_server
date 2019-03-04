@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>室内定位系统</title>
+    <!--<link href="../css/style.css" rel='stylesheet' type='text/css' />-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--jquery-->
+    <script src="../js/vendor/jquery-3.2.1.min.js"></script>
+    <!--jqueryui-->
+    <!--<link rel="stylesheet" href="http://apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+    <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>-->
+
+    <!--bootstrap-->
+    <link rel="stylesheet" href="../bootstrap-3.3.7/css/bootstrap.min.css">
+    <script src="../bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../js/vendor/popper.min.js"></script>
+
+    <!--vue.js-->
+    <script src="../js/vendor/vue.js"></script>
+    <!--template.js-->
+    <script src="../js/vendor/template.js"></script>
+    <!--路由-->
+    <script src="../js/back/back_route.js"></script>
+    <!--css-->
+    <link href="../css/back1_main.css" rel="stylesheet" type="text/css" />
+    <link href="../css/back/monitor_network.css" rel="stylesheet" type="text/css" />
+
+    <style type="text/css">
+        /*vue加载数据时，不显示难看的花括号*/
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+
+    <!--left-nav 左边的导航栏 TODO-->
+    <!--<link rel="stylesheet" type="text/css" href="../css/left_nav.css">-->
+</head>
+
+<body>
+    <p id="pageGroupId" style="display:none">monitor</p>
+    <p id="pageId" style="display:none">mNetwork</p>
+    <p id="bid" style="display:none">1</p>
+    <p id="bname" style="display:none">教学楼2号</p>
+    <div id="mainbox" class="mainbox">
+        <!--hearder是顶部-->
+        <header class="top">
+            <!--<img style="float:left;height:60px;margin:10px 10px" src="../images/logo.png" onclick="alert('hz网盘!!')" />-->
+            <p class="logo" onclick="alert('by:hz!!')">楼宇监控后台管理系统</p>
+            <!--<div class="top_navigation" style="display:block;height:60px;margin:10px 10px;float:left;"></div>-->
+            <div class="user_info">
+                <img id="head_img" class="head_img" src="../images/head_default.png" />
+                <span class="nickname">administrator_hz</span>
+
+                <div id="user_info_detail" class="user_info_detail">
+                    <div class="user_info_detail_head">
+                        <img class="head_img" src="../images/head_default.png" />
+                        <span class="nickname">administrator_hz</span>
+                    </div>
+                    <!--<div class="user_info_detail_middle"></div>-->
+                    <ul>
+                        <li><a id="personal_info" href="javascript:void(0)">个人资料</a></li>
+                        <li><a id="help_center" href="javascript:void(0)">帮助中心</a></li>
+                        <li><a id="logout" href="javascript:void(0)">退出</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </header>
+        <div class="left">
+            <div class="con-left">
+                <div style="height:480px;width:100%;margin-top:10px">
+                    <leftnav group='monitor'></leftnav>
+                </div>
+            </div>
+        </div>
+
+        <div class="right" id="right">
+            <div id="app" class="content-main" v-cloak>
+                <div class="content-bar">
+                    <div class="content-bar-left">
+                        <h3 class="content-bar-breadcrumb">{{title}}</h3>
+                    </div>
+                    <div class="content-bar-right">
+                        <button id="refresh" type="button" class="btn btn-primary" @click="refresh"><i class="fa fa-plus"></i> 新建网络</button>
+                        <button id="refresh" type="button" class="btn btn-primary" @click="refresh"><i class="fa fa-refresh"></i> 刷新</button>
+                    </div>
+                </div>
+                <!--"mapId":0,"title":"教学楼2号-4F","status":1,"descrip":"",
+                "createTime":"2018年11月14日 05:22","updateTime":"2018年11月14日 05:22","floor":4,"buildName":"教学楼2号"-->
+                <div id="data_table">
+                    <div class="list_table_container">
+                        <table id="list_table" data-deep="0">
+                            <tr class="table-head">
+                                <th style=width:5%>序号</th>
+                                <th style="width:5%">楼层</th>
+                                <th style="width:15%">网络状态</th>
+                                <th style="width:10%">协调器序列号</th>
+                                <th style="width:10%">定位设备状态</th>
+                                <th style="width:20%">操作</th>
+                            </tr>
+                            <tr v-for="(item,index) in data.obj.list">
+                                <td class="tab_num">{{index+1}}</td>
+                                <td>
+                                    <div class="tbcol-1">
+                                        <span>{{item.floor}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="data_item_id" v-if="item.comStatus==0">维护中</span>
+                                    <span class="data_item_id" v-if="item.comStatus==1">打开</span>
+                                    <span class="data_item_id" v-if="item.comStatus==2">异常</span>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span v-if='item.coordinator'>{{item.coordinator.sn}}</span>
+                                        <span v-else>未配置协调器</span>
+                                        <a href="javascript:void(0)" :nid='item.nid' title="更改协调器信息" class="tab_small_opt_button" v-on:click="changeCoor"><i class="fa fa-pencil"></i></a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="data_item_id" v-if="item.anchorStatus==0">新建网络</span>
+                                    <span class="data_item_id" v-if="item.anchorStatus==1">布设硬件</span>
+                                    <span class="data_item_id" v-if="item.anchorStatus==2">组网</span>
+                                    <span class="data_item_id" v-if="item.anchorStatus==3">标定关键锚节点</span>
+                                    <span class="data_item_id" v-if="item.anchorStatus==4">洪范</span>
+                                    <span class="data_item_id" v-if="item.anchorStatus==5">训练</span>
+                                    <span class="data_item_id" v-if="item.anchorStatus==6">完成构建</span>
+                                </td>
+                                <td id="tab_item_operate">
+                                    <button type="button" class="btn btn-primary" @click="">详情</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="list_bottom">
+                    <div class="list_bottom_tabinfo">
+                        <span>当前位置：{{bname}}</span>
+                        <span v-if="finishLoading" class="">共{{data.obj.total}}个结果</span>
+                        <span v-else class="data-loading">加载中</span>
+                    </div>
+                    <div class="list_pagination">
+                        <ul class="pagination">
+                            <li><a href="#">首页</a></li>
+                            <li><a href="#">&laquo;</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">&raquo;</a></li>
+                            <li><a href="#">尾页</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p id="footer">推荐使用360浏览器或谷歌浏览器</p>
+    </footer>
+
+
+    <!--顶部用户栏的延迟-->
+    <script src="../js/lib/jquery.hoverdelay.js"></script>
+
+    <!--fontAwesome-->
+    <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+    <!--mock-->
+    <script src="../js/back/mock.js"></script>
+    <!--app-->
+    <script src="../js/back/back_monitor_network.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../backComp/map_container/css/mapbox.css">
+    <script src="../backComp/map_container/js/mapbox.js"></script>
+    <!--box_alert-->
+    <link rel="stylesheet" type="text/css" href="../plugin/box_alert/css/box_alert.css">
+    <script src="../plugin/box_alert/js/box_alert.js"></script>
+
+    <!--box-container-->
+    <link rel="stylesheet" type="text/css" href="../plugin/box_container/css/box_container.css">
+    <script src="../plugin/box_container/js/box_container.js"></script>
+
+    <script type="text/javascript">
+    </script>
+</body>

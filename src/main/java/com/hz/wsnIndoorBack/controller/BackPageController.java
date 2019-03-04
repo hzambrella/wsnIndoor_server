@@ -3,12 +3,17 @@ package com.hz.wsnIndoorBack.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * 
+ * @author haozhoa
+ * 页面
+ */
 @Controller
 @RequestMapping("/wsnIndoorBackPage")
 public class BackPageController {
 	@RequestMapping("/building")
 	public String buildingPage() {
-		return "html/back_building";
+		return "html/back_buildingByBMap";
 	}
 
 	@RequestMapping("/map")

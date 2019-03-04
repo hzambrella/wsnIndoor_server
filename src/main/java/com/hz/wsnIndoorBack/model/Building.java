@@ -2,17 +2,24 @@ package com.hz.wsnIndoorBack.model;
 
 import java.io.Serializable;
 
+/**
+ * 楼宇
+ * @author haozhoa
+ *
+ */
 @SuppressWarnings("serial")
 public class Building implements Serializable{
-	private int bid;
-	private String Name;
-	private Double X;
-	private Double Y;
-	private String descrip;
-	private String address;
-	private int height;
+	private int bid;  //楼宇id
+	private String Name; //楼宇名
+	private Double X; //经度
+	private Double Y; //纬度
+	private String descrip; //介绍
+	private String address; //地址
 	
-	public static int Limit=10;
+	//TODO 修改字段：最低高度 最高高度
+	private int height; //高度
+	
+	public static int DefaultLimit=10;//列表数据限制默认值
 	
 	public int getBid() {
 		return bid;

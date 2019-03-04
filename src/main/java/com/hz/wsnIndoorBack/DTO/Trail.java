@@ -3,17 +3,20 @@ package com.hz.wsnIndoorBack.DTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * 轨迹
+ * @author haozhoa
+ *
+ */
 @SuppressWarnings("serial")
 public class Trail implements Serializable {
-	private String trailId;
-	private int targetId;
-	private int nid;
-	private List<Float[]>points;
-	private String startTime;
-	private String endTime;
-	
-	
+	private String trailId; //轨迹id
+	private int targetId; //目标id
+	private int nid; //无线传感器网络id
+	private List<Float[]>points; //轨迹点
+	private String startTime; //开始时间
+	private String endTime; //结束时间
+	 
 	public Trail() {
 		super();
 	}
