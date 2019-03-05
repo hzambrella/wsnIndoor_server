@@ -1,4 +1,5 @@
 //按钮防连击和解除
+//使用： $(selector).disabledButton()   $(selector).enableButton()
 ;
 (function ($, window, document, undefined) {
     //首先定义构造函数
