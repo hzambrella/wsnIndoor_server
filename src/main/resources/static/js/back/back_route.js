@@ -1,7 +1,11 @@
+/**
+ * 路由，导航栏，通用数据，通用函数
+ */
+
 //静态页面的url
 var StaticPageUrl = {
     buildInfoByTab: "back_buildingByTab.html",
-    BuildInfoByBMap: "back_buildingByBmap.html",
+    buildInfoByBMap: "back_buildingByBmap.html",
     overview: "back_overview.html",
     mapInfo: "back_map.html",
     mapdetail: "back_mapdetail.html",
@@ -14,8 +18,37 @@ var StaticPageUrl = {
     backToIndex: "back_buildingByBmap.html",
 }
 
+//服务端的页面请求url
+var ServerPageUrl={
+    buildInfoByTab: "buildInfoByTab",
+    buildInfoByBMap: "buildInfoByBMap",
+    overview: "overview",
+    mapInfo: "mapInfo",
+    mapdetail: "mapdetail",
+
+    mOverview: "mOverview",
+    mNetwork: "mNetwork",
+    mAnchor: "mAnchor",
+    mSensor: "mSensor",
+    mMove: "mMove",
+    backToIndex: "buildInfoByBMap",
+}
+
+//ajax请求url
+var AjaxReqUrl={
+    building:"/wsnIndoorBackData/building",
+    map:"/wsnIndoorBackData/map",
+    mapDetail:"/wsnIndoorBackData/mapDetail",
+    baseMap:"/wsnIndoorBackData/baseMap",
+    netComDev:"/wsnIndoorBackData/netComDev",
+    buildMapRel:"/wsnIndoorBackData/buildMapRel",
+    network:"/wsnIndoorBackData/network",
+    anchors:"/wsnIndoorBackData/anchors",
+}
+
 //页面的URL。换环境时改动这里即可。
-var PageUrl = StaticPageUrl;
+//var PageUrl = StaticPageUrl; 静态的
+var PageUrl= ServerPageUrl; //服务端
 
 //路由和通用
 //路由，通用数据格式，通用的方法
@@ -26,8 +59,8 @@ var buildInfoRouter = {
         name: "表格展示",
         parentLevel: "buildInfo",
     },
-    "BuildInfoByBMap": {
-        url: PageUrl.BuildInfoByBMap,
+    "buildInfoByBMap": {
+        url: PageUrl.buildInfoByBMap,
         name: "地图展示",
         parentLevel: "buildInfo",
     },
@@ -363,7 +396,7 @@ $(function () {
     }
 })
 
-//用数据
+//通用数据
 var commonData = {
     "code": 0,
     "message": "操作成功",

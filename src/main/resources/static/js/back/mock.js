@@ -1,15 +1,15 @@
-function getMockData(type) {
-    switch (type) {
-        case 'build':
-            return getBuildDataMock();
-        case 'map':
-            return getMapDataMock();
-    }
-}
+// function getMockData(type) {
+//     switch (type) {
+//         case 'build':
+//             return getBuildDataMock();
+//         case 'map':
+//             return getMapDataMock();
+//     }
+// }
 
-function getMapMessMockData() {
-    return mapMessMock;
-}
+// function getMapMessMockData() {
+//     return mapMessMock;
+// }
 
 
 function getBuildDataMock() {
@@ -62,21 +62,21 @@ function getTrailMock() {
 }
 
 //url: 'http://127.0.0.1:8083/geoserver/hzmap/wms',
-var mapMessMock = {
-    code: 'EPSG:404000',
-    host: 'http://127.0.0.1:8083',
-    serverType: 'geoserver',
-    workspace: 'hzmap',
-    requestType: 'wms',
-    layers: 'gdata_1_1_plane',
-    x_min: -10.153,
-    y_min: 4.394,
-    x_max: 77.846,
-    y_max: 71.617,
-    zoom_default: 1,
-    zoom_max: 5,
-    zoom_min: 1.2,
-}
+// var mapMessMock = {
+//     code: 'EPSG:404000',
+//     host: 'http://127.0.0.1:8083',
+//     serverType: 'geoserver',
+//     workspace: 'hzmap',
+//     requestType: 'wms',
+//     layers: 'gdata_1_1_plane',
+//     x_min: -10.153,
+//     y_min: 4.394,
+//     x_max: 77.846,
+//     y_max: 71.617,
+//     zoom_default: 1,
+//     zoom_max: 5,
+//     zoom_min: 1.2,
+// }
 
 
 var buildDataMock = {

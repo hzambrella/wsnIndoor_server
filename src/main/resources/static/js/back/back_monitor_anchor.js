@@ -158,10 +158,27 @@ $(function () {
     function getBuildMapRel() {
         //TODO:ajax
         mapStatusAndMessage(false, '加载楼层信息中.', '请于地图右上角选择一个楼层')
-        setTimeout(function () {
+        /*setTimeout(function () {
             vdata.buildMapRel = getBuildMapRelMock().obj
             mapStatusAndMessage(true)
-        }, 500)
+        }, 500)*/
+        $.ajax({
+            url: AjaxReqUrl.buildMapRel,
+            method: 'get',
+            dataType: 'json',
+            data: {
+                bid: vdata.bid
+            },
+            success: function (data) {
+                vdata.buildMapRel = data.obj;
+                mapStatusAndMessage(true)
+            },
+            error: function (data, status, e) {
+                console.log(data, status, e)
+                mapStatusAndMessage(true, '加载楼层异常')
+            }
+        })
+
     }
 
     function mapStatusAndMessage(mapFinishLoading, mapLoadingMessage, mapMessage) {
@@ -214,60 +231,100 @@ $(function () {
     //选择楼层后,加载地图
     function loadGMap() {
         mapStatusAndMessage(false, '加载底图信息中.', '底图加载完毕')
+        // getBaseMapDataMock(vdata.currentMapId)
         getBaseMapData(vdata.currentMapId)
 
         function getBaseMapData(mapId) {
-            //TODO:ajax
+            $.ajax({
+                url: AjaxReqUrl.baseMap,
+                method: 'get',
+                dataType: 'json',
+                data: {
+                    mapId: mapId
+                },
+                success: function (data) {
+                    vdata.baseMapData = data.obj;
+                    renderGMap(mapId)
+                },
+                error: function (data, status, e) {
+                    console.log(data, status, e)
+                    mapStatusAndMessage(true, '', '地图加载异常')
+                }
+            })
+        }
+
+        /*function getBaseMapDataMock(mapId) {
             setTimeout(function () {
                 vdata.baseMapData = getBaseMapDataMock(mapId).obj;
-                mapStatusAndMessage(false, '加载地图中.')
-                loadMap(mapId, vdata.baseMapData)
-                GMap.addLayer(anchorLayer)
-                GMap.addLayer(highAnchorLayer)
-                //  GMap.addInteraction(selectClick);
-                GMap.on('click', function (e) {
-                    //在点击时获取像素区域
-                    var pixel = GMap.getEventPixel(e.originalEvent);
-                    //用featureType来区分feature的类型。
-                    GMap.forEachFeatureAtPixel(pixel, function (feature) {
-                        //coodinate存放了点击时的坐标信息
-                        if (feature.get('featureType') == 'anchor' + Status.anchorType.higher ||
-                            feature.get('featureType') == 'anchor' + Status.anchorType.normal) {
-                            vdata.selectAnchor = {};
-                            vdata.selectAnchor.anchorId = feature.get("anchorId")
-                            // selectAnchor.nid = feature.get("nid")
-                            // selectAnchor.bid = feature.get("bid")
-                            // selectAnchor.floor = feature.get("floor")
-                            vdata.selectAnchor.anchorType = feature.get("anchorType")
-                            vdata.selectAnchor.status = feature.get("status")
-                            vdata.selectAnchor.x = feature.get("x")
-                            vdata.selectAnchor.y = feature.get("y")
-                            vdata.selectAnchor.sn = feature.get("sn")
-                            vdata.selectAnchor.createTime = feature.get("createTime")
-                            vdata.selectAnchor.updateTime = feature.get("updateTime")
-                            vdata.selectAnchor.energy = feature.get("energy")
-                            if (lastSelectFeature) {
-                                lastSelectFeature.setStyle(anchorStyleFunction(lastSelectFeature));
-                            }
-
-                            feature.setStyle(anchorStyleClickFunction(feature))
-                            lastSelectFeature = feature
-                        }
-                    });
-                });
-
-                mapStatusAndMessage(true, '', '地图加载完毕')
-                getMapDetail(mapId)
+                renderGMap()
             }, 20)
+        }*/
+
+
+        function renderGMap(mapId) {
+            mapStatusAndMessage(false, '加载地图中.')
+            loadMap(mapId, vdata.baseMapData)
+            GMap.addLayer(anchorLayer)
+            GMap.addLayer(highAnchorLayer)
+            //  GMap.addInteraction(selectClick);
+            GMap.on('click', function (e) {
+                //在点击时获取像素区域
+                var pixel = GMap.getEventPixel(e.originalEvent);
+                //用featureType来区分feature的类型。
+                GMap.forEachFeatureAtPixel(pixel, function (feature) {
+                    //coodinate存放了点击时的坐标信息
+                    if (feature.get('featureType') == 'anchor' + Status.anchorType.higher ||
+                        feature.get('featureType') == 'anchor' + Status.anchorType.normal) {
+                        vdata.selectAnchor = {};
+                        vdata.selectAnchor.anchorId = feature.get("anchorId")
+                        // selectAnchor.nid = feature.get("nid")
+                        // selectAnchor.bid = feature.get("bid")
+                        // selectAnchor.floor = feature.get("floor")
+                        vdata.selectAnchor.anchorType = feature.get("anchorType")
+                        vdata.selectAnchor.status = feature.get("status")
+                        vdata.selectAnchor.x = feature.get("x")
+                        vdata.selectAnchor.y = feature.get("y")
+                        vdata.selectAnchor.sn = feature.get("sn")
+                        vdata.selectAnchor.createTime = feature.get("createTime")
+                        vdata.selectAnchor.updateTime = feature.get("updateTime")
+                        vdata.selectAnchor.energy = feature.get("energy")
+                        if (lastSelectFeature) {
+                            lastSelectFeature.setStyle(anchorStyleFunction(lastSelectFeature));
+                        }
+
+                        feature.setStyle(anchorStyleClickFunction(feature))
+                        lastSelectFeature = feature
+                    }
+                });
+            });
+
+            mapStatusAndMessage(true, '', '地图加载完毕')
+            getMapDetail(mapId)
         }
+
 
         function getMapDetail(mapId) {
             mapStatusAndMessage(false, '加载详情中.')
-            setTimeout(function () {
+            /*setTimeout(function () {
                 vdata.mapDetail = getMapDetailMock().obj;
                 mapStatusAndMessage(true, '', '地图加载完毕：' + vdata.mapDetail.title)
-            }, 20)
-
+            }, 20)*/
+            $.ajax({
+                url: AjaxReqUrl.mapDetail,
+                method: 'get',
+                dataType: 'json',
+                data: {
+                    mapId: mapId
+                },
+                success: function (data) {
+                    vdata.mapDetail = data.obj;
+                    mapStatusAndMessage(true, '', '地图加载完毕：' + vdata.mapDetail.title)
+                },
+                error: function (data, status, e) {
+                    console.log(data, status, e)
+                    mapStatusAndMessage(true, '', '地图详情加载异常')
+                }
+            })
         }
     }
 
@@ -295,13 +352,31 @@ $(function () {
         var floor = vdata.currentFloor;
         var bid = vdata.bid;
         netStatusAndMessage(false, '加载锚节点布设状态中')
-        setTimeout(function () {
+        /*setTimeout(function () {
             vdata.network = getNetworkMock().obj;
             netStatusAndMessage(true, '', getTaskMessage())
 
             //加载锚节点数据
             getAnchorData()
-        }, 20)
+        }, 20)*/
+        $.ajax({
+            url: AjaxReqUrl.network,
+            method: 'get',
+            dataType: 'json',
+            data: {
+                bid: bid,
+                floor: floor,
+            },
+            success: function (data) {
+                vdata.network = data.obj;
+                netStatusAndMessage(true, '', getTaskMessage())
+                getAnchorData(bid,floor)
+            },
+            error: function (data, status, e) {
+                console.log(data, status, e)
+                netStatusAndMessage(true, '', '网络数据加载异常')
+            }
+        })
     }
 
 
@@ -396,21 +471,40 @@ $(function () {
     function resetAnchorLayer() {
         anchorSource.clear()
         highAnchorSource.clear()
-        vdata.showHigherAnchor=false;
-        vdata.showNormalAnchor=false;
+        vdata.showHigherAnchor = false;
+        vdata.showNormalAnchor = false;
         vdata.selectAnchor = defaultSelectAnchor
     }
 
-    //加载数据
-    function getAnchorData() {
+    //加载锚节带你数据
+    //TODO:考虑不同类型锚节点
+    function getAnchorData(bid,floor) {
         if (vdata.network.anchorStatus >= vdata.networkAnchorStatus.broadcast) {
             anchorStatusAndMessage(false, '加载锚节点数据中')
-            setTimeout(function () {
-                //TODO:ajax
+            /*setTimeout(function () {
                 vdata.anchors = getAnchorMock();
                 renderAnchorDataAsGFeature();
                 anchorStatusAndMessage(true, '', '加载完毕，点击地图中的要素即可查看信息')
-            }, 100)
+            }, 100)*/
+
+            $.ajax({
+                url: AjaxReqUrl.anchors,
+                method: 'get',
+                dataType: 'json',
+                data: {
+                    bid: bid,
+                    floor: floor,
+                },
+                success: function (data) {
+                   vdata.anchors = data;
+                   renderAnchorDataAsGFeature();
+                   anchorStatusAndMessage(true, '', '加载完毕，点击地图中的要素即可查看信息')
+                },
+                error: function (data, status, e) {
+                   console.log(data, status, e)
+                   anchorStatusAndMessage(true, '', '加载锚节点数据失败')
+                }
+            })
         }
     }
 

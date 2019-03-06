@@ -1,3 +1,4 @@
+//状态位信息
 var Status = {}
 $(function () {
     //锚节点的状态
@@ -110,4 +111,4 @@ $(function () {
     Status.targetName = targetName
 })
 
-console.log(Status)
+//console.log(Status)

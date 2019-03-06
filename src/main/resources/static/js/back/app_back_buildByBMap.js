@@ -9,6 +9,8 @@ $(function () {
     }
 
     var getData = function () {
+        //防连击
+        $("#refresh").disabledButton()
         //初始化地图
         initBMap()
         vdata.finishLoading = false;
@@ -17,16 +19,34 @@ $(function () {
             BMapObj.clearOverlays();
         }
         vdata.hasLoadMarkerOnBmap = false;
-        //TODO:ajax
-        setTimeout(function () {
-            vdata.data = getMockData('build');
+        /*setTimeout(function () {
+            vdata.data = getBuildDataMock();
             vdata.finishLoading = true;
             showBuildDataAsMarker()
-        }, 200)
+        }, 200)*/
+
+        $.ajax({
+            url: AjaxReqUrl.building,
+            method: 'get',
+            dataType: 'json',
+            data: {},
+            success: function (data) {
+                vdata.data = data
+                vdata.finishLoading = true;
+                showBuildDataAsMarker()
+
+                $("#refresh").enableButton()
+            },
+            error: function (data, status, e) {
+                console.log(data,status,e)
+                $("#refresh").enableButton()
+                vdata.finishLoading = true;
+            }
+        })
     }
 
 
-    //TODO:fix bug:表格页按刷新，切换到地图页，地图上的marker会偏移
+    // 如果搞成tabs切换 有bug:表格页按刷新，切换到地图页，地图上的marker会偏移
     var showBuildDataAsMarker = function () {
         //当标签页是地图展示，且地图已经初始化，且新数据未显示在地图中时
         if (!app.hasLoadMarkerOnBmap) {
@@ -61,12 +81,12 @@ $(function () {
                 // alert(id);
             },
             toMonitor: function toMonitor(e) {
-                // alert($(e.target).attr('bid'))
+                var bid=$(e.target).attr('bid');
                 // console.log($(e.target))
-                location.href = getRouter("mOverview");
+                location.href = getRouter("mOverview")+"?bid="+bid;
             }
         }
     })
 
-    app.refresh(app, 1);
+    app.refresh();
 })

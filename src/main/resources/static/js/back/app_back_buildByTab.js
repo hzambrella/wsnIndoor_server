@@ -4,14 +4,35 @@ $(function () {
         title: getTitle("buildInfo") + "/" + getTitle(),
         data: commonPageData,
     }
-
+    
+    //TODO:page
     var getData = function () {
+        $("#refresh").disabledButton()
         vdata.finishLoading = false;
-        //TODO:ajax
-        setTimeout(function () {
-            vdata.data = getMockData('build');
+
+        /*setTimeout(function () {
+            vdata.data = getBuildDataMock();
             vdata.finishLoading = true;
-        }, 200)
+        }, 200)*/
+
+        
+        $.ajax({
+            url: AjaxReqUrl.building,
+            method: 'get',
+            dataType: 'json',
+            data: {},
+            success: function (data) {
+                vdata.data = data
+                vdata.finishLoading = true;
+
+                $("#refresh").enableButton()
+            },
+            error: function (data, status, e) {
+                console.log(data,status,e)
+                $("#refresh").enableButton()
+                vdata.finishLoading = true;
+            }
+        })
     }
 
     var app = new Vue({
@@ -43,10 +64,10 @@ $(function () {
             toMonitor: function toMonitor() {
                 var id = $(event.target).parent().siblings(".data-item-id").html();
                 if (id);
-                location.href = getRouter("mOverview");
+                location.href = getRouter("mOverview")+"?bid="+id;
             },
         }
     })
 
-    app.refresh(app, 1);
+    app.refresh();
 })

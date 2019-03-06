@@ -38,34 +38,68 @@ $(function () {
             baseMapData: defaultGisData,
             mapDetail: defaultMapDetail,
             floor: [],
-            GmapParamMeanMap:GmapParamMeanMap,
+            GmapParamMeanMap: GmapParamMeanMap,
         },
         methods: {
             back: routerBack
         }
     })
 
-    getData(1); //首次加载页面时
+    //TODO:根据mapID，目前写死的。
+    getData(1); //根据mapID加载数据地图
 
     function getData(mapId) {
         app.finishLoading = false;
-        //TODO:ajax
-        setTimeout(function () {
+        /*setTimeout(function () {
             app.mapDetail = getMapDetailMock().obj
             //右边信息栏，显示第一个标签页
             $('#mapDataTab li:eq(0) a').tab('show');
             floorButton();
             getBaseMapData(mapId)
-        }, 20)
+        }, 20)*/
+
+        $.ajax({
+            url: AjaxReqUrl.mapDetail,
+            method: 'get',
+            dataType: 'json',
+            data: {mapId:mapId},
+            success: function (data) {
+                app.mapDetail = data
+                 //右边信息栏，显示第一个标签页
+                $('#mapDataTab li:eq(0) a').tab('show');
+                floorButton();
+                getBaseMapData(mapId)
+            },
+            error: function (data, status, e) {
+                console.log(data, status, e)
+                $("#refresh").enableButton()
+                app.finishLoading = true;
+            }
+        })
     }
 
     function getBaseMapData(mapId) {
-        //TODO:ajax
-        setTimeout(function () {
+        /*setTimeout(function () {
             app.baseMapData = getBaseMapDataMock(mapId).obj;
-            loadMap(mapId, app.baseMapData )
+            loadMap(mapId, app.baseMapData)
             app.finishLoading = true
-        }, 20)
+        }, 20)*/
+        $.ajax({
+            url: AjaxReqUrl.baseMap,
+            method: 'get',
+            dataType: 'json',
+            data: {mapId:mapId},
+            success: function (data) {
+                app.baseMapData =data.obj;
+                loadMap(mapId, app.baseMapData)
+                app.finishLoading = true
+            },
+            error: function (data, status, e) {
+                console.log(data, status, e)
+                $("#refresh").enableButton()
+                app.finishLoading = true;
+            }
+        })
     }
 
     function floorButton() {

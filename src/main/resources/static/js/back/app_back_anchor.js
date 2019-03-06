@@ -19,7 +19,7 @@ $(function () {
         vdata.hasLoadMarkerOnBmap = false;
         //TODO:ajax
         setTimeout(function () {
-            vdata.data = getMockData('build');
+            vdata.data = getBuildDataMock();
             vdata.finishLoading = true;
             showBuildDataAsMarker()
         }, 200)

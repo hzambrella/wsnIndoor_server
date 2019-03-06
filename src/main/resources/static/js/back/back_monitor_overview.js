@@ -1,3 +1,4 @@
+//TODO:优化
 $(function () {
     var svgDrawParam = {
         startX: 100,
@@ -41,13 +42,30 @@ $(function () {
 
     var getData = function () {
         vdata.finishLoading = false;
-        //TODO:ajax
-        setTimeout(function () {
+        /*setTimeout(function () {
             vdata.data = getNetDevComMock()
             cacuSVGPostionForDev(vdata.data.obj)
             //console.log(JSON.stringify(sinkLocInSVG), JSON.stringify(coorLocInSVG));
             vdata.finishLoading = true;
-        }, 200)
+        }, 200)*/
+        //TODO:bid
+
+        var bid=$("#bid").html();
+        $.ajax({
+            url: AjaxReqUrl.netComDev,
+            method: 'get',
+            dataType: 'json',
+            data: {bid:bid},
+            success: function (data) {
+                vdata.data =data
+                cacuSVGPostionForDev(vdata.data.obj)
+                vdata.finishLoading = true;
+            },
+            error: function (data, status, e) {
+                console.log(data, status, e)
+                app.finishLoading = true;
+            }
+        })
     }
 
     var app = new Vue({
@@ -62,7 +80,7 @@ $(function () {
     })
 
     function resetTopologyData() {
-       // $("#topoImage").empty();
+        // $("#topoImage").empty();
         sinkLocInSVG.splice(0, sinkLocInSVG.length)
         coorLocInSVG.splice(0, coorLocInSVG.length)
         lineOfSink.splice(0, lineOfSink.length)
