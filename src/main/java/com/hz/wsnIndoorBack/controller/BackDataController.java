@@ -1,5 +1,7 @@
 package com.hz.wsnIndoorBack.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hz.wsnIndoorBack.DTO.NetComDev;
 import com.hz.wsnIndoorBack.DTO.Result;
+import com.hz.wsnIndoorBack.DTO.Trail;
 import com.hz.wsnIndoorBack.mapper.BuildMapper;
 import com.hz.wsnIndoorBack.mapper.MapMapper;
 import com.hz.wsnIndoorBack.mapper.NetMapper;
@@ -24,12 +27,13 @@ import com.hz.wsnIndoorBack.model.Map;
 import com.hz.wsnIndoorBack.model.Network;
 import com.hz.wsnIndoorBack.model.Sensor;
 import com.hz.wsnIndoorBack.model.SensorData;
+import com.hz.wsnIndoorBack.model.Target;
 import com.hz.wsnIndoorBack.service.INetService;
+import com.hz.wsnIndoorBack.service.ITargetService;
 
 /**
  * 
- * @author haozhoa
- * 数据
+ * @author haozhoa 数据
  */
 @RestController
 @RequestMapping("/wsnIndoorBackData")
@@ -44,10 +48,14 @@ public class BackDataController {
 	private SensorMapper sensorMapper;
 	@Autowired
 	private INetService netService;
-	
+	@Autowired
+	private ITargetService targetService;
+
 	/**
 	 * 楼宇列表
-	 * @param page 页
+	 * 
+	 * @param page
+	 *            页
 	 * @return
 	 */
 	@GetMapping("/building")
@@ -63,10 +71,12 @@ public class BackDataController {
 		Result<PageInfo<Building>> result = new Result<>(pageInfo);
 		return result;
 	}
-	
+
 	/**
 	 * 地图列表
-	 * @param page 页
+	 * 
+	 * @param page
+	 *            页
 	 * @return
 	 */
 	@GetMapping("/map")
@@ -81,10 +91,12 @@ public class BackDataController {
 		Result<PageInfo<Map>> result = new Result<>(pageInfo);
 		return result;
 	}
-	
+
 	/**
 	 * 地图详情
-	 * @param mapId 地图id
+	 * 
+	 * @param mapId
+	 *            地图id
 	 * @return
 	 */
 	@GetMapping("/mapDetail")
@@ -93,9 +105,10 @@ public class BackDataController {
 		Result<Map> result = new Result<>(map);
 		return result;
 	}
-	
+
 	/**
 	 * 底图
+	 * 
 	 * @param mapId
 	 * @return
 	 */
@@ -106,20 +119,24 @@ public class BackDataController {
 		Result<BaseMapInfo> result = new Result<>(baseMap);
 		return result;
 	}
-	
+
 	/**
 	 * 获取无线传感器连接设备列表
-	 * @param bid 楼宇id
+	 * 
+	 * @param bid
+	 *            楼宇id
 	 * @return
 	 */
 	@GetMapping("/netComDev")
 	public Result<NetComDev> netComDev(@RequestParam(value = "bid") Integer bid) {
 		return netService.getNetComDevByBid(bid);
 	}
-	
+
 	/**
 	 * 获取建筑楼层和地图映射关系，用于应用中的楼层索引。
-	 * @param bid 楼宇id
+	 * 
+	 * @param bid
+	 *            楼宇id
 	 * @return
 	 */
 	@GetMapping("/buildMapRel")
@@ -131,9 +148,12 @@ public class BackDataController {
 	}
 
 	/**
-	 *  网络状况，包括通讯状态，锚节点布设状态
-	 * @param bid 楼宇id
-	 * @param floor 楼层
+	 * 网络状况，包括通讯状态，锚节点布设状态
+	 * 
+	 * @param bid
+	 *            楼宇id
+	 * @param floor
+	 *            楼层
 	 * @return
 	 */
 	@GetMapping("/network")
@@ -143,11 +163,14 @@ public class BackDataController {
 		Result<Network> result = new Result<>(network);
 		return result;
 	}
-	
+
 	/**
 	 * 网络状况列表
-	 * @param page 页数
-	 * @param bid 楼宇id
+	 * 
+	 * @param page
+	 *            页数
+	 * @param bid
+	 *            楼宇id
 	 * @return
 	 */
 	@GetMapping("/networks")
@@ -163,11 +186,16 @@ public class BackDataController {
 		Result<PageInfo<Network>> result = new Result<>(pageInfo);
 		return result;
 	}
+
 	/**
 	 * 锚节点
-	 * @param bid 楼宇id
-	 * @param floor 楼层
-	 * @param anchorType 锚节点类型
+	 * 
+	 * @param bid
+	 *            楼宇id
+	 * @param floor
+	 *            楼层
+	 * @param anchorType
+	 *            锚节点类型
 	 * @return
 	 */
 	@GetMapping("/anchors")
@@ -179,10 +207,12 @@ public class BackDataController {
 		Result<List<Anchor>> result = new Result<>(anchors);
 		return result;
 	}
-	
+
 	/**
-	 * 环境设备
-	 * @param nid 网络id
+	 * 环境设备信息列表，包括最新的环境数据 TODO:分页
+	 * 
+	 * @param nid
+	 *            网络id
 	 * @return
 	 */
 	@GetMapping("/sensors")
@@ -191,10 +221,12 @@ public class BackDataController {
 		Result<List<Sensor>> result = new Result<>(sensors);
 		return result;
 	}
-	
+
 	/**
 	 * 某环境设备的最新环境信息
-	 * @param sid 环境传感器id
+	 * 
+	 * @param sid
+	 *            环境传感器id
 	 * @return
 	 */
 	@GetMapping("/sensor/latest")
@@ -204,9 +236,10 @@ public class BackDataController {
 		Result<SensorData> result = new Result<>(data);
 		return result;
 	}
-			
+
 	/**
-	 * 某环境设备的历史环境信息
+	 * 某环境设备的所有历史环境信息
+	 * 
 	 * @param sid
 	 * @param limit
 	 * @return
@@ -221,5 +254,27 @@ public class BackDataController {
 		List<SensorData> data = sensorMapper.getSensorDataBySid(sid, limit);
 		Result<List<SensorData>> result = new Result<>(data);
 		return result;
+	}
+
+	@GetMapping("/targets")
+	public Result<List<Target>> targets(
+			@RequestParam(value = "nid") Integer nid,
+			@RequestParam(value = "startTime", required = false) String startTime,
+			@RequestParam(value = "endTime", required = false) String endTime) {
+		if (endTime == null || endTime.equals("")) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+			endTime = sdf.format(new Date());
+		}
+
+		Result<List<Target>> targets = targetService.getTargetByNidAndTime(nid,
+				startTime, endTime);
+		return targets;
+	}
+	
+	//http://localhost:8084/wsnIndoorBackData/trails?targetId=2018120111
+	@GetMapping("/trails")
+	public Result<List<Trail>>trailData(@RequestParam(value="targetId")int targetId){
+		Result<List<Trail>>trails=targetService.getTrailsByTargetId(targetId);
+		return trails;
 	}
 }

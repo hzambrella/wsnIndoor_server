@@ -97,11 +97,18 @@
 		SELECT
 		target_id
 		FROM public.trail
-		where create_time between
-		to_timestamp('${startTime}','YYYY-MM-DD-HH24')
-		and
-		to_timestamp('${endTime}','YYYY-MM-DD-HH24') and nid=${nid} group by
-		target_id
+		where nid=${nid}
+		<choose>
+			<when test="startTime!=null and startTime!=''">
+				and create_time between
+				to_timestamp('${startTime}','YYYY-MM-DD-HH24')
+				and
+				to_timestamp('${endTime}','YYYY-MM-DD-HH24') group by
+				target_id
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
 		);
 	</select>
 
@@ -177,12 +184,12 @@
 	<select id="getTrailPointsByTargetId" resultType="trailPoint">
 		SELECT id,
 		target_id as targetId, trail_id as trailId, point[0] as x,
-		point[1] as y, nid,to_char(create_time,'YYYY年MM月DD日 HH24:MI:SS') as createTime
-		FROM trail;
+		point[1] as
+		y, nid,to_char(create_time,'YYYY年MM月DD日 HH24:MI:SS') as createTime
+		FROM trail
+		where target_id=#{targetId};
 	</select>
 
-<!-- 	<select id="test" resultType="TP">
-		select ${targetId}as targetId,point
-		as point from trail where target_id=${targetId};
-	</select> -->
+	<!-- <select id="test" resultType="TP"> select ${targetId}as targetId,point 
+		as point from trail where target_id=${targetId}; </select> -->
 </mapper>

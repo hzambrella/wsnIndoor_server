@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.hz.wsnIndoorBack.DTO.Result;
 import com.hz.wsnIndoorBack.DTO.Trail;
 import com.hz.wsnIndoorBack.mapper.TargetMapper;
+import com.hz.wsnIndoorBack.model.Target;
 import com.hz.wsnIndoorBack.model.TrailPoint;
 import com.hz.wsnIndoorBack.service.ITargetService;
 
@@ -16,12 +17,21 @@ import com.hz.wsnIndoorBack.service.ITargetService;
 public class TargetServiceImpl implements ITargetService {
 	@Autowired
 	private TargetMapper targetMapper;
-
+	
 	@Override
+	public Result<List<Target>>getTargetByNidAndTime(int nid,String startTime,String endTime){
+		Result<List<Target>> result = new Result<>();
+		List<Target> targets = targetMapper.getTargetsByNidAndTime(nid,
+				startTime, endTime);
+		result.setObj(targets);
+		return result;
+	}
+	
+
 	public Result<List<Trail>> getTrailsByTargetId(Integer targetId) {
 		Result<List<Trail>> result = new Result<>();
 		List<TrailPoint> tps = targetMapper
-				.getTrailPointsByTargetId(2018120111);
+				.getTrailPointsByTargetId(targetId);
 		String trailId = "";
 		List<Trail>list=new ArrayList<>();
 		

@@ -117,12 +117,28 @@ $(function () {
     //==》getNetwork-》根据不同状态，请求锚节点数据
     // 地图加载完后，才能将节点数据渲染到地图
     function getBuildMapRel() {
-        //TODO:ajax
         mapStatusAndMessage(false, '加载楼层信息中.', '请于地图右上角选择一个楼层')
-        setTimeout(function () {
+        /*setTimeout(function () {
             vdata.buildMapRel = getBuildMapRelMock().obj
             mapStatusAndMessage(true)
-        }, 500)
+        }, 500)*/
+        $.ajax({
+            url: AjaxReqUrl.buildMapRel,
+            method: 'get',
+            dataType: 'json',
+            data: {
+                bid: vdata.bid
+            },
+            success: function (data) {
+                vdata.buildMapRel = data.obj;
+                mapStatusAndMessage(true)
+            },
+            error: function (data, status, e) {
+                console.log(data, status, e)
+                mapStatusAndMessage(true, '加载楼层异常')
+            }
+        })
+
     }
 
     function mapStatusAndMessage(mapFinishLoading, mapLoadingMessage, mapMessage) {
@@ -175,37 +191,74 @@ $(function () {
         getBaseMapData(vdata.currentMapId)
 
         function getBaseMapData(mapId) {
-            //TODO:ajax
-            setTimeout(function () {
-                vdata.baseMapData = getBaseMapDataMock(mapId).obj;
-                mapStatusAndMessage(false, '加载地图中.')
-                loadMap(mapId, vdata.baseMapData)
-                GMap.addLayer(trailLayer)
-                GMap.addOverlay(popup)
-                GMap.on('click', function (e) {
-                    //在点击时获取像素区域
-                    var pixel = GMap.getEventPixel(e.originalEvent);
-                    //用featureType来区分feature的类型。
-                    GMap.forEachFeatureAtPixel(pixel, function (feature) {
-                        //coodinate存放了点击时的坐标信息
-                        if (feature.get("featureType") == "startPoint" || feature.get("featureType") == "endPoint") {
-                            doPopup(e.coordinate, feature)
-                        }
-                    });
-                });
+            $.ajax({
+                url: AjaxReqUrl.baseMap,
+                method: 'get',
+                dataType: 'json',
+                data: {
+                    mapId: mapId
+                },
+                success: function (data) {
+                    vdata.baseMapData = data.obj;
+                    renderGMap(mapId)
+                },
+                error: function (data, status, e) {
+                    console.log(data, status, e)
+                    mapStatusAndMessage(true, '', '地图加载异常')
+                }
+            })
+        }
 
-                mapStatusAndMessage(true, '', '地图加载完毕')
-                getMapDetail(mapId)
-            }, 20)
+        // function getBaseMapDataMock(mapId){
+        //     setTimeout(function(){
+        //         vdata.baseMapData = getBaseMapDataMock(mapId).obj;
+        //          renderGMap(mapId)
+        //     }, 20)
+        // }
+
+        function renderGMap(mapId) {
+            mapStatusAndMessage(false, '加载地图中.')
+            loadMap(mapId, vdata.baseMapData)
+            GMap.addLayer(trailLayer)
+            GMap.addOverlay(popup)
+            GMap.on('click', function (e) {
+                //在点击时获取像素区域
+                var pixel = GMap.getEventPixel(e.originalEvent);
+                //用featureType来区分feature的类型。
+                GMap.forEachFeatureAtPixel(pixel, function (feature) {
+                    //coodinate存放了点击时的坐标信息
+                    if (feature.get("featureType") == "startPoint" || feature.get("featureType") == "endPoint") {
+                        doPopup(e.coordinate, feature)
+                    }
+                });
+            });
+
+            mapStatusAndMessage(true, '', '地图加载完毕')
+            getMapDetail(mapId)
         }
 
         function getMapDetail(mapId) {
             mapStatusAndMessage(false, '加载详情中.')
-            setTimeout(function () {
+            /*setTimeout(function () {
                 vdata.mapDetail = getMapDetailMock().obj;
                 mapStatusAndMessage(true, '', '地图加载完毕：' + vdata.mapDetail.title)
-            }, 20)
-
+            }, 20)*/
+            $.ajax({
+                url: AjaxReqUrl.mapDetail,
+                method: 'get',
+                dataType: 'json',
+                data: {
+                    mapId: mapId
+                },
+                success: function (data) {
+                    vdata.mapDetail = data.obj;
+                    mapStatusAndMessage(true, '', '地图加载完毕：' + vdata.mapDetail.title)
+                },
+                error: function (data, status, e) {
+                    console.log(data, status, e)
+                    mapStatusAndMessage(true, '', '地图详情加载异常')
+                }
+            })
         }
     }
 
@@ -241,16 +294,34 @@ $(function () {
 
     //选择楼层后，加载网络数据，然后根据步骤加载锚节点数据
     function getNetwork() {
-        //TODO:ajax
         var floor = vdata.currentFloor;
         var bid = vdata.bid;
         netStatusAndMessage(false, '加载锚节点布设状态中')
-        setTimeout(function () {
+        /*setTimeout(function () {
             vdata.network = getNetworkMock().obj;
             netStatusAndMessage(true, '', '加载完毕')
             targetStatusAndMessage(true, '', '输入时间段和关键词，点击查询按钮，即可查询目标');
             // getTargetData();
-        }, 20)
+        }, 20)*/
+        $.ajax({
+            url: AjaxReqUrl.network,
+            method: 'get',
+            dataType: 'json',
+            data: {
+                bid: bid,
+                floor: floor,
+            },
+            success: function (data) {
+                vdata.network = data.obj;
+                netStatusAndMessage(true, '', '加载完毕')
+                targetStatusAndMessage(true, '', '输入时间段和关键词，点击查询按钮，即可查询目标');
+                getTargetData();
+            },
+            error: function (data, status, e) {
+                console.log(data, status, e)
+                netStatusAndMessage(true, '', '网络数据加载异常')
+            }
+        })
     }
 
 
@@ -284,28 +355,68 @@ $(function () {
         }
 
         console.log(datePickerStartTime, datePickerEndTime);
-        setTimeout(function () {
-            //TODO:ajax
+        /*setTimeout(function () {
             vdata.targets = getTargetMock();
 
             targetStatusAndMessage(true, '', '加载完毕，点击列表中目标的"查看轨迹"即可查看轨迹信息')
-        }, 100)
+        }, 100)*/
+        $.ajax({
+            url: AjaxReqUrl.targets,
+            method: 'get',
+            dataType: 'json',
+            data: {
+                nid: vdata.network.nid,
+                startTime: datePickerStartTime,
+                endTime: datePickerEndTime,
+            },
+            success: function (data) {
+                vdata.targets = data.obj;
+                targetStatusAndMessage(true, '', '加载完毕，点击列表中目标的"查看轨迹"即可查看轨迹信息')
+            },
+            error: function (data, status, e) {
+                console.log(data, status, e)
+                targetStatusAndMessage(true, '', '数据加载异常')
+            }
+        })
     }
 
 
     //获得轨迹数据。并绘制到地图
     function getTrail(e) {
+        targetStatusAndMessage(false, '加载移动目标轨迹数据中')
         resetTrailLayerAndData()
         targetId = $(e.target).attr("targetId")
         vdata.selectTargetId = targetId
-        //TODO:ajax
+        /*
         if (targetId == 2018120111) {
             trails = getTrailMock().obj;
             renderTrailDataAsFeature(trails);
-        }
+        }*/
+        console.log(targetId)
+        $.ajax({
+            url: AjaxReqUrl.trails,
+            method: 'get',
+            dataType: 'json',
+            data: {
+                targetId: targetId,
+            },
+            success: function (data) {
+                trails = data.obj;
+                renderTrailDataAsFeature(trails);
+                targetStatusAndMessage(true, '加载完毕，点击起始点可以查看起始时间')
+            },
+            error: function (data, status, e) {
+                console.log(data, status, e)
+                targetStatusAndMessage(true, '', '数据加载异常')
+            }
+        })
     }
 
     function renderTrailDataAsFeature(trails) {
+        if (trails==null||trails.length<2){
+            return;
+        }
+
         var trailLinesFeature = [];
         for (var i = 0; i < trails.length; i++) {
             var trail = trails[i];

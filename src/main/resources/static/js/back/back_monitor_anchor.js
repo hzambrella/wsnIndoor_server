@@ -156,7 +156,6 @@ $(function () {
     //==》getNetwork-》根据不同状态，请求锚节点数据
     // 地图加载完后，才能将锚节点数据渲染到地图
     function getBuildMapRel() {
-        //TODO:ajax
         mapStatusAndMessage(false, '加载楼层信息中.', '请于地图右上角选择一个楼层')
         /*setTimeout(function () {
             vdata.buildMapRel = getBuildMapRelMock().obj
@@ -231,7 +230,6 @@ $(function () {
     //选择楼层后,加载地图
     function loadGMap() {
         mapStatusAndMessage(false, '加载底图信息中.', '底图加载完毕')
-        // getBaseMapDataMock(vdata.currentMapId)
         getBaseMapData(vdata.currentMapId)
 
         function getBaseMapData(mapId) {
@@ -252,14 +250,6 @@ $(function () {
                 }
             })
         }
-
-        /*function getBaseMapDataMock(mapId) {
-            setTimeout(function () {
-                vdata.baseMapData = getBaseMapDataMock(mapId).obj;
-                renderGMap()
-            }, 20)
-        }*/
-
 
         function renderGMap(mapId) {
             mapStatusAndMessage(false, '加载地图中.')
@@ -305,10 +295,6 @@ $(function () {
 
         function getMapDetail(mapId) {
             mapStatusAndMessage(false, '加载详情中.')
-            /*setTimeout(function () {
-                vdata.mapDetail = getMapDetailMock().obj;
-                mapStatusAndMessage(true, '', '地图加载完毕：' + vdata.mapDetail.title)
-            }, 20)*/
             $.ajax({
                 url: AjaxReqUrl.mapDetail,
                 method: 'get',
@@ -348,17 +334,10 @@ $(function () {
 
     //选择楼层后，加载网络数据，然后根据步骤加载锚节点数据
     function getNetwork() {
-        //TODO:ajax
         var floor = vdata.currentFloor;
         var bid = vdata.bid;
         netStatusAndMessage(false, '加载锚节点布设状态中')
-        /*setTimeout(function () {
-            vdata.network = getNetworkMock().obj;
-            netStatusAndMessage(true, '', getTaskMessage())
 
-            //加载锚节点数据
-            getAnchorData()
-        }, 20)*/
         $.ajax({
             url: AjaxReqUrl.network,
             method: 'get',

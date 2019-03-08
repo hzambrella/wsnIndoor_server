@@ -79,7 +79,7 @@ $(function () {
         sensors: [],
         selectSensor: defaultSelectSensor,
         //状态
-        sensorStatus:Status.sensorStatus,
+        sensorStatus: Status.sensorStatus,
     }
 
     //图层
@@ -114,10 +114,26 @@ $(function () {
     function getBuildMapRel() {
         //TODO:ajax
         mapStatusAndMessage(false, '加载楼层信息中.', '请于地图右上角选择一个楼层')
-        setTimeout(function () {
+        /* setTimeout(function () {
             vdata.buildMapRel = getBuildMapRelMock().obj
             mapStatusAndMessage(true)
-        }, 500)
+        }, 500)*/
+        $.ajax({
+            url: AjaxReqUrl.buildMapRel,
+            method: 'get',
+            dataType: 'json',
+            data: {
+                bid: vdata.bid
+            },
+            success: function (data) {
+                vdata.buildMapRel = data.obj;
+                mapStatusAndMessage(true)
+            },
+            error: function (data, status, e) {
+                console.log(data, status, e)
+                mapStatusAndMessage(true, '加载楼层异常')
+            }
+        })
     }
 
     function mapStatusAndMessage(mapFinishLoading, mapLoadingMessage, mapMessage) {
@@ -170,43 +186,71 @@ $(function () {
         getBaseMapData(vdata.currentMapId)
 
         function getBaseMapData(mapId) {
-            //TODO:ajax
-            setTimeout(function () {
-                vdata.baseMapData = getBaseMapDataMock(mapId).obj;
-                mapStatusAndMessage(false, '加载地图中.')
-                loadMap(mapId, vdata.baseMapData)
-                GMap.addLayer(sensorLayer)
-                GMap.addOverlay(popup)
-                GMap.on('click', function (e) {
-                    //在点击时获取像素区域
-                    var pixel = GMap.getEventPixel(e.originalEvent);
-                    //用featureType来区分feature的类型。
-                    GMap.forEachFeatureAtPixel(pixel, function (feature) {
-                        //coodinate存放了点击时的坐标信息
-                        if (feature.get('featureType') == 'sensor' + Status.sensorType.normal) {
-
-                            if (lastSelectFeature) {
-                                lastSelectFeature.setStyle(sensorStyleFunction(lastSelectFeature));
-                            }
-
-                            feature.setStyle(sensorStyleClickFunction(feature))
-                            lastSelectFeature = feature
-                            doPopup(e.coordinate, feature)
-                        }
-                    });
-                });
-
-                mapStatusAndMessage(true, '', '地图加载完毕')
-                getMapDetail(mapId)
-            }, 20)
+            $.ajax({
+                url: AjaxReqUrl.baseMap,
+                method: 'get',
+                dataType: 'json',
+                data: {
+                    mapId: mapId
+                },
+                success: function (data) {
+                    vdata.baseMapData = data.obj;
+                    renderGMap(mapId)
+                },
+                error: function (data, status, e) {
+                    console.log(data, status, e)
+                    mapStatusAndMessage(true, '', '地图加载异常')
+                }
+            })
         }
+
+        function renderGMap(mapId) {
+            mapStatusAndMessage(false, '加载地图中.')
+            loadMap(mapId, vdata.baseMapData)
+            GMap.addLayer(sensorLayer)
+            GMap.addOverlay(popup)
+            GMap.on('click', function (e) {
+                //在点击时获取像素区域
+                var pixel = GMap.getEventPixel(e.originalEvent);
+                //用featureType来区分feature的类型。
+                GMap.forEachFeatureAtPixel(pixel, function (feature) {
+                    //coodinate存放了点击时的坐标信息
+                    if (feature.get('featureType') == 'sensor' + Status.sensorType.normal) {
+
+                        if (lastSelectFeature) {
+                            lastSelectFeature.setStyle(sensorStyleFunction(lastSelectFeature));
+                        }
+
+                        feature.setStyle(sensorStyleClickFunction(feature))
+                        lastSelectFeature = feature
+                        doPopup(e.coordinate, feature)
+                    }
+                });
+            });
+
+            mapStatusAndMessage(true, '', '地图加载完毕')
+            getMapDetail(mapId)
+        }
+
 
         function getMapDetail(mapId) {
             mapStatusAndMessage(false, '加载详情中.')
-            setTimeout(function () {
-                vdata.mapDetail = getMapDetailMock().obj;
-                mapStatusAndMessage(true, '', '地图加载完毕：' + vdata.mapDetail.title)
-            }, 20)
+            $.ajax({
+                url: AjaxReqUrl.mapDetail,
+                method: 'get',
+                dataType: 'json',
+                data: {
+                    mapId: mapId
+                },
+                success: function (data) {
+                    vdata.mapDetail = data.obj;
+                    mapStatusAndMessage(true, '', '地图加载完毕：' + vdata.mapDetail.title)
+                },
+                error: function (data, status, e) {
+                    console.log(data, status, e)
+                    mapStatusAndMessage(true, '', '地图详情加载异常')
+                }
+            })
         }
     }
 
@@ -256,17 +300,34 @@ $(function () {
 
     //选择楼层后，加载网络数据
     function getNetwork() {
-        //TODO:ajax
         var floor = vdata.currentFloor;
         var bid = vdata.bid;
         netStatusAndMessage(false, '加载网络数据中')
-        setTimeout(function () {
+
+        /*setTimeout(function () {
             vdata.network = getNetworkMock().obj;
             netStatusAndMessage(true, '', '加载完毕')
-
-            //TODO:加载传感器节点数据
             getSensorData()
-        }, 20)
+        }, 20)*/
+
+        $.ajax({
+            url: AjaxReqUrl.network,
+            method: 'get',
+            dataType: 'json',
+            data: {
+                bid: bid,
+                floor: floor,
+            },
+            success: function (data) {
+                vdata.network = data.obj;
+                netStatusAndMessage(true, '', '加载完毕')
+                getSensorData(vdata.network.nid)
+            },
+            error: function (data, status, e) {
+                console.log(data, status, e)
+                netStatusAndMessage(true, '', '网络数据加载异常')
+            }
+        })
     }
 
 
@@ -284,14 +345,30 @@ $(function () {
     }
 
     //加载数据
-    function getSensorData() {
+    function getSensorData(nid) {
         sensorStatusAndMessage(false, '传感器数据中')
-        setTimeout(function () {
-            //TODO:ajax
+        /*setTimeout(function () {
             vdata.sensors = getSensorMock().obj;
             renderSensorDataAsGFeature();
             sensorStatusAndMessage(true, '', '加载完毕，点击地图中的要素即可查看信息')
-        }, 100)
+        }, 100)*/
+        $.ajax({
+            url: AjaxReqUrl.sensors,
+            method: 'get',
+            dataType: 'json',
+            data: {
+                nid: nid,
+            },
+            success: function (data) {
+                vdata.sensors = data.obj;
+                renderSensorDataAsGFeature();
+                sensorStatusAndMessage(true, '', '加载完毕，点击地图中的要素即可查看信息')
+            },
+            error: function (data, status, e) {
+                console.log(data, status, e)
+                sensorStatusAndMessage(true, '', '网络数据加载异常')
+            }
+        })
     }
 
     function renderSensorDataAsGFeature() {

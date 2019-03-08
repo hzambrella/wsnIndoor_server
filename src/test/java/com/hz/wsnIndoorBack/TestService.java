@@ -33,7 +33,7 @@ public class TestService {
 		List<Target>targets=targetMapper.getTargetsByNidAndTime(1, "2018-12-01-10", "2018-12-01-13");
 		System.out.println(JSON.toJSON(targets));
 		
-		Result<List<Trail>>result=targetService.getTrailsByTargetId(2018120111);
+		Result<List<Trail>>result=targetService.getTrailsByTargetId(2018120112);
 		System.out.println(JSON.toJSON(result));
 	}
 }

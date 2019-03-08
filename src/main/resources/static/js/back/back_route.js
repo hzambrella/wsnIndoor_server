@@ -44,6 +44,9 @@ var AjaxReqUrl={
     buildMapRel:"/wsnIndoorBackData/buildMapRel",
     network:"/wsnIndoorBackData/network",
     anchors:"/wsnIndoorBackData/anchors",
+    sensors:"/wsnIndoorBackData/sensors",
+    targets:"/wsnIndoorBackData/targets",
+    trails:"/wsnIndoorBackData/trails",
 }
 
 //页面的URL。换环境时改动这里即可。
