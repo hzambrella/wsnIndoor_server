@@ -87,6 +87,32 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.41</version>
 		</dependency>
+
+		<!--libsvm -->
+		<dependency>
+			<groupId>tw.edu.ntu.csie</groupId>
+			<artifactId>libsvm</artifactId>
+			<version>3.17</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/libsvm.jar</systemPath>
+		</dependency>
+
+		<!-- httpClient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.7</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/httpclient-4.5.5.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.9</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/httpcore-4.4.9.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -95,9 +121,24 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!-- 本地jar打包 -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+					<compilerArguments>
+						<extdirs>${project.basedir}/src/main/resources/lib</extdirs>
+					</compilerArguments>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
+	<!-- <resources> <resource> <directory>${basedir}/src/main/resources</directory> 
+		<targetPath>BOOT-INF/lib/</targetPath> <includes> <include>**/*.jar</include> 
+		</includes> </resource> </resources> -->
 	<repositories>
 		<repository>
 			<id>spring-milestones</id>

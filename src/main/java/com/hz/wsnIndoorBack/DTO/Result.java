@@ -7,7 +7,7 @@ import java.util.Map;
 public class Result<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public int code; // 结果码 结果码为0表示无错误，其它则有错误
+	public int code; // 结果码 Success表示无错误，其它则有错误
 
 	public String message; // 结果详细信息
 
@@ -17,7 +17,19 @@ public class Result<T> implements Serializable {
 
 	public T obj; // 结果对象消息封装
 
-	public static int Success = 0;
+	/**
+	 * 成功
+	 */
+	public static int Success = 200;
+	public static String SuccessMess = "操作成功";
+	/**
+	 * 参数异常
+	 */
+	public static int ParamError = 400;
+	/**
+	 * 系统异常
+	 */
+	public static int SystemError = 500;
 
 	public T getObj() {
 		return obj;
@@ -37,13 +49,13 @@ public class Result<T> implements Serializable {
 	public Result() {
 		this.code = Success;
 		this.success = true;
-		this.message = "操作成功";
+		this.message = SuccessMess;
 	}
 
 	public Result(T obj) {
 		this.code = Success;
 		this.success = true;
-		this.message = "操作成功";
+		this.message = SuccessMess;
 		this.obj = obj;
 	}
 

@@ -109,4 +109,15 @@
 		JOIN coordinator as t2 ON
 		t1.coor_id=t2.coor_id WHERE bid=${bid}
 	</select>
+
+	<insert id="saveAnchorLocResult">
+		INSERT INTO anchor(
+			anchor_id , nid, anchor_type, position, status
+		)
+		VALUES
+		(#{anchorId}, #{nid}, #{anchorType},point(#{x},#{y}),#{status})
+		on conflict(anchor_id) do
+			update
+			set position=point(#{x},#{y});
+	</insert>
 </mapper>

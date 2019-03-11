@@ -1,5 +1,6 @@
 package com.hz.wsnIndoorBack.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -16,4 +17,6 @@ public interface NetMapper {
 			@Param("floor")Integer floor, @Param("anchorType")Integer anchorType);//获取锚节点列表
 	public Network getNetwork(@Param("bid")Integer bid,@Param("floor")Integer floor);//获取某楼层的网络对象
 	public List<Network> getNetworks(@Param("bid")Integer bid);//获取楼宇的所有网络对象
+	
+	public void saveAnchorLocResult(Anchor anchor);//存储锚节点定位的结果
 }

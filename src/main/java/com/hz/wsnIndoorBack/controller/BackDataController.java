@@ -1,10 +1,15 @@
 package com.hz.wsnIndoorBack.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +20,7 @@ import com.github.pagehelper.PageInfo;
 import com.hz.wsnIndoorBack.DTO.NetComDev;
 import com.hz.wsnIndoorBack.DTO.Result;
 import com.hz.wsnIndoorBack.DTO.Trail;
+import com.hz.wsnIndoorBack.libSVMUtils.model.LearningParam;
 import com.hz.wsnIndoorBack.mapper.BuildMapper;
 import com.hz.wsnIndoorBack.mapper.MapMapper;
 import com.hz.wsnIndoorBack.mapper.NetMapper;
@@ -31,6 +37,7 @@ import com.hz.wsnIndoorBack.model.Target;
 import com.hz.wsnIndoorBack.service.INetService;
 import com.hz.wsnIndoorBack.service.ITargetService;
 
+//TODO:日志系统,权限系统
 /**
  * 
  * @author haozhoa 数据
@@ -256,6 +263,17 @@ public class BackDataController {
 		return result;
 	}
 
+	/**
+	 * 获取一个楼层监控网络中的移动目标
+	 * 
+	 * @param nid
+	 *            网络id
+	 * @param startTime
+	 *            时间段：开始，若为空，就是所有数据
+	 * @param endTime
+	 *            时间段：结束，默认是当前时间
+	 * @return
+	 */
 	@GetMapping("/targets")
 	public Result<List<Target>> targets(
 			@RequestParam(value = "nid") Integer nid,
@@ -270,11 +288,19 @@ public class BackDataController {
 				startTime, endTime);
 		return targets;
 	}
-	
-	//http://localhost:8084/wsnIndoorBackData/trails?targetId=2018120111
+
+	/**
+	 * 获取移动目标的轨迹
+	 * 
+	 * @param targetId
+	 * @return
+	 */
+	// http://localhost:8084/wsnIndoorBackData/trails?targetId=2018120111
 	@GetMapping("/trails")
-	public Result<List<Trail>>trailData(@RequestParam(value="targetId")int targetId){
-		Result<List<Trail>>trails=targetService.getTrailsByTargetId(targetId);
+	public Result<List<Trail>> trailData(
+			@RequestParam(value = "targetId") int targetId) {
+		Result<List<Trail>> trails = targetService
+				.getTrailsByTargetId(targetId);
 		return trails;
 	}
 }

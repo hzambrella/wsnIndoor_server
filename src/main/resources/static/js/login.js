@@ -18,7 +18,7 @@ function doLogin() {
     //$.error_message(JSON.stringify(d));
     // $("#loginForm #account").addClass("red");
     //TODO: ajax
-    location.href = "back_buildingByBMap.html";
+    location.href = "/wsnIndoorBackPage";
 }
 
 function doRegister() {

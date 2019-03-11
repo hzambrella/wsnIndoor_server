@@ -30,15 +30,27 @@
 
     <!--css-->
     <link href="../css/main.css" rel="stylesheet" type="text/css" />
-
     <style type="text/css">
+        html,
         body {
-            background-color: #CCCCCC;
+            overflow: hidden
         }
     </style>
 </head>
 
-<body>
+<body class="bg">
+    <ul class="bg-bubbles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
     <div class="notice">
         <div class="notice-tit" id="notice-tit">
             <ul>
@@ -51,10 +63,12 @@
             <div class="show">
                 <form action="" id="loginForm" method="post" style="position: relative; width: 400px;margin: 50px auto 0px auto;">
                     <label class="inputlabel" for="accountLogin">账号:</label>
-                    <input class="input" type="text" id=accountLogin name="accountLogin" value=""  placeholder="测试版,随便输"/><br />
+                    <input class="input" type="text" id=accountLogin name="accountLogin" value="" placeholder="测试版,随便输" /><br
+                    />
                     <p style="display:block;clear:both"></p>
-                    <label class="inputlabel" for="passwordLogin" >密码:</label>
-                    <input class="input" type="password" id=passwordLogin name="passwordLogin" value=""  placeholder="测试版,随便输"/><br />
+                    <label class="inputlabel" for="passwordLogin">密码:</label>
+                    <input class="input" type="password" id=passwordLogin name="passwordLogin" value="" placeholder="测试版,随便输" /><br
+                    />
                     <p style="display:block;clear:both"></p>
                     <input class="checkbox" type="checkbox" style="margin:10px" id="remember" name="remember" />记住登录<br />
                     <a id="login" href="javascript:void(0)" style="margin-left:60px">确定</a>
@@ -64,13 +78,15 @@
 
             <div class="hide">
                 <!--TODO:解决label和input对齐的问题-->
-                <form action="" id="registerForm" method="post" action="" style="position: relative;width:400px;margin: 0 auto;">
+                <form action="" id="registerForm" method="post" style="position: relative;width:400px;margin: 0 auto;">
                     <label class="inputlabel" for="accountRegister">账号:</label>
-                    <input class="input" type="text" id=accountRegister name="accountRegister" value=""  placeholder="测试版,随便输" /><br />
+                    <input class="input" type="text" id=accountRegister name="accountRegister" value="" placeholder="测试版,随便输" /><br
+                    />
                     <label class="inputlabel" for="nickname">昵称:</label>
                     <input class="input" type="text" id=nickname name="nickname" value="" /><br />
-                    <label class="inputlabel" for="passwordRegister" >密码:</label>
-                    <input class="input" type="password" id=passwordRegister name="passwordRegister" placeholder="测试版,随便输" value="" /><br />
+                    <label class="inputlabel" for="passwordRegister">密码:</label>
+                    <input class="input" type="password" id=passwordRegister name="passwordRegister" placeholder="测试版,随便输" value="" /><br
+                    />
                     <label class="inputlabel" for="passwordAgain">重输密码:</label>
                     <input class="input" type="password" id=passwordAgain name="passwordAgain" value="" /><br />
                     <a id="register" href="javascript:void(0)" style="margin-left:60px">确定</a>

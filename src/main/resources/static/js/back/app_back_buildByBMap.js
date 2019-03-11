@@ -74,6 +74,9 @@ $(function () {
 
         },
         methods: {
+            exit:function logout(){
+                alert(1)
+            },
             refresh: getData,
             showLoc: function showLoc() {
                 var id = $(event.target).parent().siblings(".data-item-id").html();

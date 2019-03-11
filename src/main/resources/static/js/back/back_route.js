@@ -19,7 +19,7 @@ var StaticPageUrl = {
 }
 
 //服务端的页面请求url
-var ServerPageUrl={
+var ServerPageUrl = {
     buildInfoByTab: "buildInfoByTab",
     buildInfoByBMap: "buildInfoByBMap",
     overview: "overview",
@@ -35,23 +35,23 @@ var ServerPageUrl={
 }
 
 //ajax请求url
-var AjaxReqUrl={
-    building:"/wsnIndoorBackData/building",
-    map:"/wsnIndoorBackData/map",
-    mapDetail:"/wsnIndoorBackData/mapDetail",
-    baseMap:"/wsnIndoorBackData/baseMap",
-    netComDev:"/wsnIndoorBackData/netComDev",
-    buildMapRel:"/wsnIndoorBackData/buildMapRel",
-    network:"/wsnIndoorBackData/network",
-    anchors:"/wsnIndoorBackData/anchors",
-    sensors:"/wsnIndoorBackData/sensors",
-    targets:"/wsnIndoorBackData/targets",
-    trails:"/wsnIndoorBackData/trails",
+var AjaxReqUrl = {
+    building: "/wsnIndoorBackData/building",
+    map: "/wsnIndoorBackData/map",
+    mapDetail: "/wsnIndoorBackData/mapDetail",
+    baseMap: "/wsnIndoorBackData/baseMap",
+    netComDev: "/wsnIndoorBackData/netComDev",
+    buildMapRel: "/wsnIndoorBackData/buildMapRel",
+    network: "/wsnIndoorBackData/network",
+    anchors: "/wsnIndoorBackData/anchors",
+    sensors: "/wsnIndoorBackData/sensors",
+    targets: "/wsnIndoorBackData/targets",
+    trails: "/wsnIndoorBackData/trails",
 }
 
 //页面的URL。换环境时改动这里即可。
 //var PageUrl = StaticPageUrl; 静态的
-var PageUrl= ServerPageUrl; //服务端
+var PageUrl = ServerPageUrl; //服务端
 
 //路由和通用
 //路由，通用数据格式，通用的方法
@@ -154,7 +154,7 @@ var commonRouter = {
 var monitorDeviceRouter = {
     //地图，这里运行算法1
     "mAnchor": {
-        url:PageUrl.mAnchor,
+        url: PageUrl.mAnchor,
         name: "定位设备管理",
         parentLevel: "mDevice",
     },
@@ -197,7 +197,7 @@ var monitorNavRouter = {
     // },
 
     "mMove": {
-        url:PageUrl.mMove,
+        url: PageUrl.mMove,
         icon: "fa fa-random",
         name: "移动目标管理",
     },
@@ -396,6 +396,43 @@ $(function () {
         }
         $modal.boxAlert(modalOpt);
         $modal.show();
+    }
+})
+
+
+var topTpl = "<div>" +
+    "<p class='logo' @click='logo'>楼宇监控后台管理系统</p>" +
+    "<div class='top_navigation' style='display:block;height:60px;margin:10px 10px;float:left;'></div>" +
+    "<div class='user_info'>" +
+    "<img id='head_img' class='head_img' src='../images/head_default.png' />" +
+    " <span class='nickname'>administrator_hz</span>"
+
+    +
+    "<div id='user_info_detail' class='user_info_detail'>" +
+    "<div class='user_info_detail_head'>" +
+    " <img class='head_img' src='../images/head_default.png' />" +
+    " <span class='nickname'>administrator_hz</span>" +
+    "</div>" +
+    "<!--<div class='user_info_detail_middle'></div>-->" +
+    "<ul>" +
+    "<li><a id='personal_info' href='javascript:void(0)'>个人资料</a></li>" +
+    " <li><a id='help_center' href='javascript:void(0)'>帮助中心</a></li>" +
+    " <li><a id='logout' href='javascript:void(0)' @click='exit' >退出</a></li>" +
+    "</ul>" +
+    " </div>" +
+    " </div>" +
+    "</div>"
+//top
+Vue.component('top', {
+    template: topTpl,
+    mounted: function () {},
+    methods: {
+        logo:function(){
+            alert('by:hz!!')
+        },
+        exit: function () {
+            location.href="/wsnIndoor/logout"
+        }
     }
 })
 
