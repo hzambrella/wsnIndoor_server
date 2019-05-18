@@ -155,7 +155,7 @@ var monitorDeviceRouter = {
     //地图，这里运行算法1
     "mAnchor": {
         url: PageUrl.mAnchor,
-        name: "定位设备管理",
+        name: "锚节点管理",
         parentLevel: "mDevice",
     },
     //地图，这里运行算法2,进行固定目标的定位

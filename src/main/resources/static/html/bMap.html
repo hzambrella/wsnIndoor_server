@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <title>室内定位系统</title>
     <!--<link href="../css/style.css" rel='stylesheet' type='text/css' />-->
@@ -21,20 +20,25 @@
     <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>-->
 
-    <!--bootstrap-->
+    <!--Bootstrap3 -->
     <link rel="stylesheet" href="../bootstrap-3.3.7/css/bootstrap.min.css">
     <script src="../bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <script src="../js/vendor/popper.min.js"></script>
-    <script src="../js/main.js"></script>
+
+
     <!--vue.js-->
     <script src="../js/vendor/vue.js"></script>
     <!--template.js-->
     <script src="../js/vendor/template.js"></script>
+
+    <!--baidu map-->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Nj2QIPFYyVb49p93WnQhxbvjPt4lsmco"></script>
+    <script src="../js/main.js"></script>
     <!--路由-->
     <script src="../js/back/back_route.js"></script>
     <!--css-->
     <link href="../css/back1_main.css" rel="stylesheet" type="text/css" />
-    <link href="../css/back/app_back_map.css" rel="stylesheet" type="text/css" />
+    <link href="../css/back/app_back_build.css" rel="stylesheet" type="text/css" />
 
     <style type="text/css">
         /*vue加载数据时，不显示难看的花括号*/
@@ -50,7 +54,7 @@
 
 <body>
     <p id="pageGroupId" style="display:none">Index</p>
-    <p id="pageId" style="display:none">mapInfo</p>
+    <p id="pageId" style="display:none">buildInfoByBMap</p>
     <div id="mainbox" class="mainbox">
         <!--hearder是顶部-->
         <header class="top">
@@ -69,58 +73,60 @@
                 <div class="content-bar">
                     <div class="content-bar-left">
                         <span class="content-bar-breadcrumb">{{title}}</span>
-                        <span v-if="finishLoading" class="content-bar-result-count">共{{data.obj.total}}个结果</span>
+                        <span v-if="finishLoading" class="content-bar-result-count">共{{data.obj.total||0}}个结果</span>
                         <span v-else class="content-bar-result-count data-loading">加载中</span>
                     </div>
+                    <div class="content-bar-right">
+                        <button id="refresh" type="button" class="btn btn-primary" @click="refresh">刷新</button>
+                    </div>
                 </div>
-                <!--"mapId":0,"title":"教学楼2号-4F","status":1,"descrip":"",
-                "createTime":"2018年11月14日 05:22","updateTime":"2018年11月14日 05:22","floor":4,"buildName":"教学楼2号"-->
-                <div id="data_table">
-                    <table id="list_table" data-deep="0">
-                        <tr class="table-head">
-                            <th style=width:5%>序号</th>
-                            <th style="width:20%">
-                                <span class="tab_title" id="selectFileNum" style="float:left;margin-left:5px">标题</span>
-                            </th>
-                            <th style="width:25%">楼名</th>
-                            <th style="width:5%">楼层</th>
-                            <th style="width:10%">状态</th>
-                            <th style="width:15%">修改时间</th>
-                            <th style="width:20%">操作</th>
-                        </tr>
-                        <tr v-for="(item,index) in data.obj.list">
-                            <td class="tab_num">{{index+1}}</td>
-                            <td>
-                                <div class="tbcol-1">
-                                    <span>{{item.title}}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div v-if="item.buildName!=null">
-                                    <p class="data-item-id" style="display:none">{{item.bid}}</p>
-                                    <a href="javascript:void(0)" title="查看位置" class="tab_small_opt_button" v-on:click.prevent="showLoc"><i class="fa fa-map-marker"></i></a>|
-                                    <span>{{item.buildName}}</span>
-                                </div>
-                                <div v-else>
-                                    暂无
-                                </div>
-                            </td>
-                            <td><span class="data_item_id">{{item.floor}}</span></td>
-                            <td>
-                                <span class="data_item_id" v-if="item.status==0">未发布</span>
-                                <span class="data_item_id" v-if="item.status==1">已发布</span>
-                                <span class="data_item_id" v-if="item.status==2">已锁定</span>
-                            </td>
-                            <td>
-                                <span>{{item.updateTime}}</span>
-                            </td>
-
-                            <td id="tab_item_operate">
-                                <p class="data-item-id" style="display:none">{{item.mapId}}</p>
-                                <a href="javascript:void(0)" title="详情和编辑" class="tab_small_opt_button" id="toDetail" v-on:click.prevent="toDetail"><i class="fa fa-pencil"></i> |</a>
-                                <a href="javascript:void(0)" title="删除地图" class="tab_small_opt_button" id="deleteMap" v-on:click.prevent="deleteMap"><i class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
+                <!--地图形式-->
+                <div id="bmap" class="bmap-container"></div>
+                <div id="bmapDataInfo" class="bmap-data-container">
+                    <h4>楼宇信息和管理入口</h4>
+                    <span class="build-hint" v-if='currentMarker==null'>请在地图中点击您要查看和管理的楼宇</span>
+                    <span class="build-hint" v-else>点击进入楼宇，即可对楼宇进行管理</span>
+                    <div id="bmapButton" v-if='currentMarker!=null'>
+                        <button type="button" class="btn btn-primary" :bid="currentData.bid" @click='toMonitor'>进入楼内</button>
+                        <button type="button" class="btn btn-danger" disabled>删除数据</button>
+                    </div>
+                    <table class="table table-bordered table-sm" style="margin-top:10px;">
+                        <thead>
+                            <tr>
+                                <th width="25%">键</th>
+                                <th width="75%">值</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>楼宇编号</td>
+                                <td>{{currentData.bid}}</td>
+                            </tr>
+                            <tr>
+                                <td>名称</td>
+                                <td>{{currentData.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>高度</td>
+                                <td>{{currentData.height}}</td>
+                            </tr>
+                            <tr>
+                                <td>地址</td>
+                                <td>{{currentData.address}}</td>
+                            </tr>
+                            <tr>
+                                <td>简介</td>
+                                <td>{{currentData.descrip}}</td>
+                            </tr>
+                            <tr>
+                                <td>经度</td>
+                                <td>{{currentData.x}}</td>
+                            </tr>
+                            <tr>
+                                <td>纬度</td>
+                                <td>{{currentData.y}}</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -141,14 +147,16 @@
     <!--mock-->
     <script src="../js/back/mock.js"></script>
     <!--app-->
-    <script src="../js/back/app_back_map.js"></script>
+    <script src="../js/back/app_back_buildByBMap.js"></script>
+    <!--app-->
+    <script src="../js/back/back_bmap.js"></script>
 
     <!--modal-->
     <link rel="stylesheet" type="text/css" href="../plugin/modal/css/modal.css">
     <script src="../plugin/modal/js/modal.js"></script>
     <div id="modal"></div>
 
-    <!--map-container 注意元素和js的顺序 .用于显示建筑物的位置-->
+    <!--map-container 注意元素和js的顺序-->
     <div id="map_modal" style="display: none">
         <div id="mapContainer" class="map_container">
             <div class="title">
@@ -163,6 +171,10 @@
     </div>
     <link rel="stylesheet" type="text/css" href="../backComp/map_container/css/mapbox.css">
     <script src="../backComp/map_container/js/mapbox.js"></script>
+
+    <script type="text/javascript">
+    </script>
+
     <!--box_alert-->
     <link rel="stylesheet" type="text/css" href="../plugin/box_alert/css/box_alert.css">
     <script src="../plugin/box_alert/js/box_alert.js"></script>

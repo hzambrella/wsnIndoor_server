@@ -1,15 +1,10 @@
 package com.hz.wsnIndoorBack.controller;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +15,6 @@ import com.github.pagehelper.PageInfo;
 import com.hz.wsnIndoorBack.DTO.NetComDev;
 import com.hz.wsnIndoorBack.DTO.Result;
 import com.hz.wsnIndoorBack.DTO.Trail;
-import com.hz.wsnIndoorBack.libSVMUtils.model.LearningParam;
 import com.hz.wsnIndoorBack.mapper.BuildMapper;
 import com.hz.wsnIndoorBack.mapper.MapMapper;
 import com.hz.wsnIndoorBack.mapper.NetMapper;

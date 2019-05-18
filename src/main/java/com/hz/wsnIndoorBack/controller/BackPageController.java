@@ -42,7 +42,7 @@ public class BackPageController {
 	 */
 	@RequestMapping("/buildInfoByBMap")
 	public String buildInfoByBMap() {
-		return "html/back_buildingByBmap";
+		return "html/bMap";
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class BackPageController {
 	}
 
 	/**
-	 * 锚节点
+	 * 锚节点管理
 	 * 
 	 * @return
 	 */

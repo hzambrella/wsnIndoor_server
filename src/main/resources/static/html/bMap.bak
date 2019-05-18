@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html>
-
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>室内定位系统</title>
     <!--<link href="../css/style.css" rel='stylesheet' type='text/css' />-->
@@ -184,10 +184,5 @@
     <script src="../plugin/box_container/js/box_container.js"></script>
 
     <script type="text/javascript">
-  //顶部用户栏
-    $("#logout").click(function(){
-    	alert(1)
-    	location.href="/wsnIndoor/login"
-    })
     </script>
 </body>

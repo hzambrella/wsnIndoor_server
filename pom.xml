@@ -87,31 +87,27 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.41</version>
 		</dependency>
+		
+		<!-- httpClient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.10</version>
+        </dependency>
 
-		<!--libsvm -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.6</version>
+        </dependency>
+        
+        <!--libsvm -->
 		<dependency>
 			<groupId>tw.edu.ntu.csie</groupId>
 			<artifactId>libsvm</artifactId>
 			<version>3.17</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/lib/libsvm.jar</systemPath>
-		</dependency>
-
-		<!-- httpClient -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.7</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/lib/httpclient-4.5.5.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpcore</artifactId>
-			<version>4.4.9</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/lib/httpcore-4.4.9.jar</systemPath>
 		</dependency>
 	</dependencies>
 
